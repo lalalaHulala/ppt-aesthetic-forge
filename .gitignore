@@ -1,0 +1,26 @@
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# 工作区数据（AI 会话记忆、临时探针）
+.workbuddy/
+AGENTS.md
+memory/
+.tmp_*
+.wb_*
+.wb-test.js
+.raw-*.png
+
+# 构建与部署产物
+_site/
+dist/
+node_modules/
+*.log
+
+# 本地预览
+.venv/
+__pycache__/

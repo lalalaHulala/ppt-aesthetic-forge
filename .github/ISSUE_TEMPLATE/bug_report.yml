@@ -1,0 +1,67 @@
+name: Bug 报告
+description: 有东西没按预期工作（样式错乱、按钮失灵、导出异常等）
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。请尽量把信息填全——尤其是浏览器版本和复现步骤，不然很难定位。
+
+  - type: checkboxes
+    id: searched
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已经搜索过 issue，没有重复报告
+          required: true
+        - label: 我用的是最新版 `ppt-aesthetic-forge.html`
+          required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 一条一条写，从打开页面开始
+      placeholder: |
+        1. 打开 ppt-aesthetic-forge.html
+        2. 左侧点「暗色科技」
+        3. 按 B 进入对比模式
+        4. …
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望效果 / 实际效果
+      placeholder: |
+        期望：右侧对比栏显示实时效果
+        实际：右侧是空白
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: 浏览器与系统
+      placeholder: Edge 141 / Windows 11 23H2
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: 截图或录屏
+      description: 直接把图片拖进这个框
+    validations:
+      required: false
+
+  - type: textarea
+    id: console
+    attributes:
+      label: 控制台报错（F12 → Console）
+      description: 有就贴，没有可留空
+      render: shell
+    validations:
+      required: false

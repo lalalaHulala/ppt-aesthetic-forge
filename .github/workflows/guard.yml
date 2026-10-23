@@ -1,0 +1,65 @@
+name: Guard
+
+# 守住这个项目的三条底线：单文件、零依赖、不联网。
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  single-file:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 禁止外部资源引用
+        run: |
+          if grep -nE '<script[^>]+src=|<link[^>]*href=|@import|<img[^>]+src=' ppt-aesthetic-forge.html; then
+            echo "::error file=ppt-aesthetic-forge.html::检测到外部资源引用。本项目必须保持单文件、零依赖、不联网。"
+            exit 1
+          fi
+          echo "外部资源引用：0"
+
+      - name: 禁止网络请求代码
+        run: |
+          if grep -nE 'fetch\(|XMLHttpRequest|sendBeacon|new WebSocket|EventSource' ppt-aesthetic-forge.html; then
+            echo "::error file=ppt-aesthetic-forge.html::检测到网络请求代码。"
+            exit 1
+          fi
+          echo "网络请求代码：0"
+
+      - name: 校验内联 JS 语法
+        run: |
+          node -e '
+            const fs = require("fs");
+            const s = fs.readFileSync("ppt-aesthetic-forge.html", "utf8");
+            const a = s.indexOf("<script>");
+            const b = s.lastIndexOf("</script>");
+            if (a < 0 || b < 0) { console.error("未找到内联脚本"); process.exit(1); }
+            fs.writeFileSync("/tmp/app.js", s.slice(a + 8, b));
+            console.log("提取脚本 " + (b - a - 8) + " 字节");
+          '
+          node --check /tmp/app.js
+          echo "JS 语法：通过"
+
+      - name: 检查文件体积
+        run: |
+          size=$(wc -c < ppt-aesthetic-forge.html)
+          echo "单文件体积：$size 字节"
+          if [ "$size" -gt 400000 ]; then
+            echo "::error file=ppt-aesthetic-forge.html::超过 400KB，确认是否误引入大段资源。"
+            exit 1
+          fi
+
+      - name: 检查仓库根目录只有一个 HTML
+        run: |
+          count=$(ls *.html 2>/dev/null | wc -l)
+          echo "根目录 HTML 文件数：$count"
+          if [ "$count" -ne 1 ]; then
+            echo "::error::根目录应当只有一个 HTML，实际 $count 个。"
+            exit 1
+          fi

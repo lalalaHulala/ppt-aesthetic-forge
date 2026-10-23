@@ -1,0 +1,66 @@
+name: 新增设计方案
+description: 想加一套 PPT 设计方案（提需求，不一定要自己实现）
+title: "[方案] "
+labels: ["design"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        加方案的门槛写在这里，先自检再提：
+        1. 必须和现有 10 套**视觉上明显不同**（不是换配色、换字体）
+        2. 必须有可查来源
+        3. 场景必须具体
+
+  - type: input
+    id: name
+    attributes:
+      label: 方案名称
+      placeholder: 数据新闻 / 极简年报 / 教育课件
+    validations:
+      required: true
+
+  - type: textarea
+    id: visual
+    attributes:
+      label: 视觉特征
+      description: 封面怎么构图、内页什么结构、有没有签名元素
+      placeholder: |
+        封面：图表占 60% 版面，标题压在左下角
+        内页：一页一张主图 + 三行注释，细线分隔
+        签名：坐标轴刻度、数据来源小字
+    validations:
+      required: true
+
+  - type: textarea
+    id: difference
+    attributes:
+      label: 和现有哪套最像？差在哪
+      description: 这条最容易被追问，请认真回答
+      placeholder: 和「咨询报告」都偏数据，但咨询是表格驱动、结论前置；这套是图表叙事、结论后置
+    validations:
+      required: true
+
+  - type: textarea
+    id: scene
+    attributes:
+      label: 适合场景
+      placeholder: 媒体深度报道、行业白皮书、数据复盘会
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: 来源
+      description: 可以是一条链接、一本书、一份设计规范，或某个真实案例
+      placeholder: https://…
+    validations:
+      required: true
+
+  - type: textarea
+    id: ref
+    attributes:
+      label: 参考截图
+      description: 有参考图直接拖进来
+    validations:
+      required: false

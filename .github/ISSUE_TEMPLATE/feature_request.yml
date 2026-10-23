@@ -1,0 +1,42 @@
+name: 功能建议
+description: 想要新能力，或者觉得现在的流程别扭
+title: "[建议] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提建议前先说清楚一件事：这个项目要**保持单文件、零依赖、不联网**。
+        需要构建工具、后端服务或第三方库的方案，基本不会被接受。
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你遇到什么问题
+      description: 描述场景，而不是直接描述解法
+      placeholder: 每次做课件都要手动改一遍配色，能不能…
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 你希望的方案
+      placeholder: 在左栏加一个「导入自己的配色」入口，填 5 个色值就生成一套 palette
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 考虑过的其他做法
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: 约束确认
+      options:
+        - label: 这个功能不需要联网、不需要构建、不引入依赖
+          required: true
