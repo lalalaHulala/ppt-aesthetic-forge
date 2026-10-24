@@ -63,3 +63,55 @@ jobs:
             echo "::error::根目录应当只有一个 HTML，实际 $count 个。"
             exit 1
           fi
+
+  integration:
+    # 守住「大脑抽取层」与 HTML 不脱节：CLI / MCP 读的都是 HTML 里的同一份数据
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 自检（10 套方案 · DNA 往返 · 覆盖 · 对比度）
+        run: node tools/selftest.mjs
+
+      - name: CLI 冒烟
+        run: |
+          node bin/paf.mjs list > /dev/null
+          node bin/paf.mjs dims > /dev/null
+          node bin/paf.mjs spec --design keynote --json > /tmp/spec.json
+          node -e '
+            const s = require("/tmp/spec.json");
+            if (s.schema !== "ppt-aesthetic-forge/spec@1") process.exit(1);
+            if (!s.dna.startsWith("AF:")) process.exit(1);
+            console.log("CLI 输出合法，DNA = " + s.dna);
+          '
+          node bin/paf.mjs dna AF:consulting:inkblue:sans:datagrid:clean:dense:jeii --dna
+
+      - name: MCP 握手冒烟
+        run: |
+          printf '%s\n' \
+            '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"ci","version":"1"}}}' \
+            '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
+          | node bin/paf-mcp.mjs 2>/dev/null > /tmp/mcp.out
+          node -e '
+            const fs = require("fs");
+            const lines = fs.readFileSync("/tmp/mcp.out", "utf8").trim().split("\n").map(JSON.parse);
+            const init = lines.find(m => m.id === 1);
+            const list = lines.find(m => m.id === 2);
+            if (!init?.result?.serverInfo?.name) { console.error("initialize 失败"); process.exit(1); }
+            if (list.result.tools.length !== 4) { console.error("工具数应为 4，实际 " + list.result.tools.length); process.exit(1); }
+            console.log("MCP 就绪，工具：" + list.result.tools.map(t => t.name).join(", "));
+          '
+
+      - name: 禁止 npm 运行时依赖
+        run: |
+          node -e '
+            const p = require("./package.json");
+            if (p.dependencies && Object.keys(p.dependencies).length) {
+              console.error("::error::不允许引入运行时依赖"); process.exit(1);
+            }
+            console.log("运行时依赖：0");
+          '

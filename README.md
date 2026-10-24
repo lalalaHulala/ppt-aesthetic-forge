@@ -141,6 +141,70 @@ contrast.body=13.3:1（WCAG AA 达标线 4.5:1）
 
 ---
 
+## 接到 AI / Agent 里用
+
+网页只是入口。真正的用法是让**生成 PPT 的那一方**直接读到这份规格——否则每次都靠人复制粘贴。
+
+仓库里带了三种接入形态，全部零依赖（Node 18+，不需要 `npm install`）：
+
+### 一、命令行（任何能执行命令的 agent 都能用）
+
+```bash
+node bin/paf.mjs list                            # 10 套方案 + 好处 + 场景
+node bin/paf.mjs spec --design keynote           # 规格简报（markdown）
+node bin/paf.mjs spec --design darktech --json    # 完整 JSON
+node bin/paf.mjs spec --design consulting --prompt  # 只要提示词
+node bin/paf.mjs dna AF:keynote:inkblue:sans:photo:clean:airy:jeii
+```
+
+规格 JSON 长这样（节选）：
+
+```json
+{
+  "dna": "AF:darktech:deepnavy:mono:glow:grid:standard:jeii",
+  "design": { "id": "darktech", "template": "darktech", "mood": "dark" },
+  "tokens": {
+    "colors": { "bg": "#0B1526", "text": "#E8EEF6", "accent": "#00D4FF", "chart": ["#00D4FF", "..."] },
+    "fonts":  { "head": "JetBrains Mono", "headWeight": 700 },
+    "metrics":{ "radiusPx": 10, "padPx": 46, "gapPx": 20, "titleSizePx": 39.5 }
+  },
+  "contrast": { "body": 15.65, "sub": 6.95, "accent": 10.32, "pass": true }
+}
+```
+
+### 二、MCP server（Claude Desktop / Cursor / 任何支持 MCP 的 agent）
+
+```json
+{
+  "mcpServers": {
+    "ppt-aesthetic-forge": {
+      "command": "node",
+      "args": ["/绝对路径/bin/paf-mcp.mjs"]
+    }
+  }
+}
+```
+
+暴露 4 个工具：`list_design_presets`、`get_design_spec`、`apply_design_dna`、`get_style_prompt`。手写 JSON-RPC，没有第三方依赖。
+
+### 三、Agent Skill（Claude Code / WorkBuddy / Codex）
+
+复制 `skill/SKILL.md` 到你的 skills 目录，或直接在仓库里指向它。Skill 里写清了：什么时候该调用、怎么按场景挑方案、交付时该用哪个字段。
+
+### 四、嵌进网页
+
+它就是个静态文件，直接 iframe 即可：
+
+```html
+<iframe src="ppt-aesthetic-forge.html" style="width:100%;height:900px;border:0"></iframe>
+```
+
+### 接不进去的地方
+
+Kimi PPT、iSlide、Gamma、AiPPT 这类**闭源 AI PPT 工具没有插件生态**，只接受自然语言提示词。对它们只能用 `--prompt` 输出整段文字人工粘贴——这也是 `promptText()` 里塞满具体令牌值的原因：让模型有东西可抓，而不是只看到"高级感"三个字。
+
+---
+
 ## 技术实现
 
 - **单文件、零依赖、零构建**：一个 HTML 里塞了样式、数据、逻辑。不需要 Node、不需要打包，拷贝就能用。
@@ -153,15 +217,25 @@ contrast.body=13.3:1（WCAG AA 达标线 4.5:1）
 
 ```
 ppt-aesthetic-forge/
-├── ppt-aesthetic-forge.html      # 全部代码，就是这个文件
+├── ppt-aesthetic-forge.html      # 网页本体：全部样式、数据、逻辑都在这一个文件
+├── bin/
+│   ├── paf.mjs                   # 命令行
+│   └── paf-mcp.mjs               # MCP server（零依赖，手写 JSON-RPC）
+├── tools/
+│   ├── forge-core.mjs            # 从 HTML 里提取「大脑」，单一数据源
+│   └── selftest.mjs              # 25 项自检，CI 里跑
+├── skill/SKILL.md                # Agent Skill 说明
 ├── docs/screenshots/             # README 配图
-├── .github/                      # issue / PR 模板、Pages 部署
+├── .github/                      # issue / PR 模板、Pages 部署、CI
+├── package.json
 ├── README.md
 ├── CONTRIBUTING.md
 ├── CODE_OF_CONDUCT.md
 ├── CHANGELOG.md
 └── LICENSE
 ```
+
+**关于「单一数据源」**：`tools/forge-core.mjs` 不会复制任何方案数据。它用一套最小 DOM 桩把 HTML 里的内联脚本跑起来，直接调用其中的 `OPTS`、`dnaCode()`、`promptText()`。所以改了 HTML，CLI 和 MCP 自动跟着变，不存在两边数据漂移的问题——`tools/selftest.mjs` 就是用来在 CI 里守住这条的。
 
 ---
 

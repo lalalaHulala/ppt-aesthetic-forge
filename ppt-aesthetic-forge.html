@@ -747,7 +747,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 <div class="modal-mask" id="helpMask">
   <div class="modal">
     <h3>审美捏脸台 · 使用说明</h3>
-    <div class="msub">游戏开局式 PPT 审美选择器 · 纯本地单文件 · v1.0.0</div>
+    <div class="msub">游戏开局式 PPT 审美选择器 · 纯本地单文件 · v1.1.0</div>
     <div class="modal-sec">三步用法</div>
     <div class="modal-flow">
       <div><b>① 捏脸</b> — 左侧固定显示配置步骤，下方列出该维度的全部选项；鼠标悬停任意选项即时预演效果。选中设计方案即整套套用。</div>
@@ -1454,7 +1454,7 @@ const MENUS = {
    {t:'导出 HTML 幻灯片…',fn:exportDeck},{sep:1},{t:'重置',fn:resetAll}],
  view:[{t:'适应宽度',fn:()=>setZoom('fit')},{t:'50%',fn:()=>setZoom('0.5')},{t:'75%',fn:()=>setZoom('0.75')},{t:'100%',fn:()=>setZoom('1')},
    {sep:1},{t:'前后对比',key:'B',fn:toggleCompare},{t:'专注预览',key:'F',fn:toggleFocus}],
- help:[{t:'使用说明与快捷键',key:'?',fn:openHelp},{t:'关于',fn:()=>toast('审美捏脸台 v1.0.0 · 纯本地单文件 · 无网络请求')}]
+ help:[{t:'使用说明与快捷键',key:'?',fn:openHelp},{t:'关于',fn:()=>toast('审美捏脸台 v1.1.0 · 纯本地单文件 · 无网络请求')}]
 };
 let openMenu = null;
 function toggleMenu(key, anchor){

@@ -1,0 +1,42 @@
+{
+  "name": "ppt-aesthetic-forge",
+  "version": "1.1.0",
+  "description": "单文件 PPT 审美选择器：10 套去重设计方案 + 结构化设计令牌，可当网页用，也可被 agent 通过 CLI / MCP / Skill 调用",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "paf": "bin/paf.mjs",
+    "paf-mcp": "bin/paf-mcp.mjs"
+  },
+  "files": [
+    "bin/",
+    "tools/",
+    "skill/",
+    "ppt-aesthetic-forge.html",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node tools/selftest.mjs",
+    "start": "node bin/paf.mjs list"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lalalaHulala/ppt-aesthetic-forge.git"
+  },
+  "homepage": "https://lalalahulala.github.io/ppt-aesthetic-forge/",
+  "keywords": [
+    "ppt",
+    "presentation",
+    "design-system",
+    "design-tokens",
+    "slide-design",
+    "mcp",
+    "claude-skill",
+    "ai-agent",
+    "single-file"
+  ]
+}

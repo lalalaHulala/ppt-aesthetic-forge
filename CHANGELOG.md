@@ -2,6 +2,30 @@
 
 本文件格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.0] - 2026-10-24
+
+把「只能人看」的网页变成「agent 能调」的规格提供方。网页本身的行为、数据、DNA 格式均未改变。
+
+### 新增
+
+- **`bin/paf.mjs` 命令行**：`list` / `dims` / `spec` / `dna` 四个子命令，输出 markdown 简报或完整 JSON，支持逐维覆盖与五种输出格式。零依赖，只用 Node 内置模块。
+- **`bin/paf-mcp.mjs` MCP server**：手写 JSON-RPC 2.0 over stdio，暴露 4 个工具——`list_design_presets`、`get_design_spec`、`apply_design_dna`、`get_style_prompt`。可接 Claude Desktop、Cursor 及任何支持 MCP 的 agent。
+- **`skill/SKILL.md` Agent Skill**：写明何时该调用、如何按场景挑方案、交付时用哪个字段，附固定工作流。
+- **`tools/forge-core.mjs`**：用最小 DOM 桩加载 HTML 内联脚本，直接复用其中的 `OPTS`、`dnaCode()`、`promptText()`、`cssVarsText()`。**不复制任何方案数据**——改 HTML，CLI 与 MCP 自动同步，不会漂移。
+- **`tools/selftest.mjs`**：25 项自检（方案唯一性、字段完整性、10 套规格互不相同、DNA 往返、覆盖优先级、对比度阈值、非法输入）。已接入 CI。
+- **`package.json`**：`npx` 可直接调用的 bin 声明，`npm test` 即跑自检。
+- README 新增「接到 AI / Agent 里用」一节，含 MCP 配置片段、CLI 示例、iframe 嵌入方式。
+
+### 修复
+
+- 自检发现并记录 DNA 编码的量化特性：末尾 4 位走 base36 单字符（36 档），4 个微调滑杆往返误差 ≤ 1.5%。这是格式设计的既定取舍，不改动编码（兼容性优先），已写入文档与 Skill 说明。
+- 自检发现维度计数应区分「1 个主选择 + 5 个微调」，`listDimensions()` 现返回 `primary` 标记。
+
+### 说明
+
+- 网页仍是单文件、零依赖、零网络请求；新增的 CLI / MCP 是**可选**的旁路，不参与网页运行。
+- 运行时依赖保持为 0，CI 新增校验项防止将来引入。
+
 ## [1.0.0] - 2026-10-24
 
 首次公开发布。
