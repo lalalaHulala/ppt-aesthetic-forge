@@ -23,11 +23,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 单文件本身就是成品，只需把它放到站点根目录的 index.html
+      # 站点 = 人用的主页面 + AI 读的入口文件。
+      # 少了后半部分，「把链接甩给 AI」这条路就断了，所以一起发。
       - name: Prepare site
         run: |
           mkdir -p _site
           cp ppt-aesthetic-forge.html _site/index.html
+          cp llms.txt _site/
+          cp -r ai _site/
+          echo "站点内容："
+          find _site -type f | sort
+
+      # 有的工具优先探测 /llms-full.txt 拿「全文」，拼一份给它（索引 + 10 套完整规格）
+      - name: Build llms-full.txt
+        run: cat llms.txt ai/spec.md > _site/llms-full.txt && wc -c _site/llms-full.txt
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
