@@ -1,6 +1,6 @@
 {
   "schema": "ppt-aesthetic-forge/presets@1",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "updated": "2026-10-24",
   "project": {
     "name": "PPT 审美捏脸台",
@@ -17,7 +17,7 @@
     "starter": "https://lalalahulala.github.io/ppt-aesthetic-forge/ai/starter.html",
     "app": "https://lalalahulala.github.io/ppt-aesthetic-forge/"
   },
-  "usage": "给 AI：读 ai/spec.md 挑一套方案，把 tokens.cssVars 粘进 ai/starter.html 的 :root，再填文案。给程序：直接用 designs[].tokens 与 designs[].dna。不要解析 ppt-aesthetic-forge.html，那是给人用的界面。",
+  "usage": "给 AI：读 ai/spec.md 挑一套方案，把 tokens.cssVars 粘进 ai/starter.html 的 :root，再填文案。给程序：直接用 designs[].tokens 与 designs[].url。不要解析 ppt-aesthetic-forge.html，那是给人用的界面。",
   "stages": {
     "canvas": "960x540",
     "pages": [
@@ -166,6 +166,7 @@
       "name": "极简 / 北欧",
       "en": "Minimal · Nordic",
       "category": "classic",
+      "url": "https://lalalahulala.github.io/ppt-aesthetic-forge/?g=minimal",
       "dna": "AF:minimal:mono:sans:line:clean:airy:jeii",
       "template": "minimal",
       "mood": "light",
@@ -208,7 +209,7 @@
           "titleSizePx": 47.8,
           "bodySizePx": 21.8
         },
-        "cssVars": ":root{\n  /* 审美捏脸台 · AF:minimal:mono:sans:line:clean:airy:jeii */\n  --ppt-bg:#FFFFFF; --ppt-surface:#FAFAFA; --ppt-text:#111111; --ppt-sub:#6B6B6B;\n  --ppt-primary:#1A1A1A; --ppt-accent:#FF5A36;\n  --ppt-chart-1:#1A1A1A; --ppt-chart-2:#FF5A36; --ppt-chart-3:#9A9A9A; --ppt-chart-4:#D9D9D9;\n  --ppt-font-head:\"HarmonyOS Sans SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif; --ppt-font-body:\"HarmonyOS Sans SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif;\n  --ppt-head-weight:800; --ppt-head-spacing:0em;\n  --ppt-radius:10px; --ppt-pad:58px; --ppt-gap:28px;\n  --ppt-title-size:47.8px; --ppt-body-size:21.8px;\n}"
+        "cssVars": ":root{\n  /* 审美捏脸台 · minimal · 极简 / 北欧 */\n  --ppt-bg:#FFFFFF; --ppt-surface:#FAFAFA; --ppt-text:#111111; --ppt-sub:#6B6B6B;\n  --ppt-primary:#1A1A1A; --ppt-accent:#FF5A36;\n  --ppt-chart-1:#1A1A1A; --ppt-chart-2:#FF5A36; --ppt-chart-3:#9A9A9A; --ppt-chart-4:#D9D9D9;\n  --ppt-font-head:\"HarmonyOS Sans SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif; --ppt-font-body:\"HarmonyOS Sans SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif;\n  --ppt-head-weight:800; --ppt-head-spacing:0em;\n  --ppt-radius:10px; --ppt-pad:58px; --ppt-gap:28px;\n  --ppt-title-size:47.8px; --ppt-body-size:21.8px;\n}"
       },
       "contrast": {
         "body": 18.88,
@@ -220,7 +221,7 @@
         "score": 100,
         "grade": "S"
       },
-      "prompt": "【PPT 审美DNA】AF:minimal:mono:sans:line:clean:airy:jeii\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#FFFFFF · surface=#FAFAFA · text=#111111 · primary=#1A1A1A · accent=#FF5A36\ncolors.chart=#1A1A1A,#FF5A36,#9A9A9A,#D9D9D9\ntypography.head=\"HarmonyOS Sans SC\" · body=\"HarmonyOS Sans SC\" · weight=800 · letterSpacing=0em\nradius=10px · pad=58px · gap=28px · title=47.8px · body=21.8px\ncontrast.body=18.9:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：极简 / 北欧（高留白 · 单焦点 · 2-3 色）｜适用：投资人路演、高管简报、产品发布等需要\"少而有力\"的正式场合。\n2. 配色方案：黑白极简｜底色 #FFFFFF · 面板 #FAFAFA · 主色 #1A1A1A · 强调 #FF5A36 · 文字 #111111\n3. 字体搭配：黑体 · 现代｜标题 800 字重，全篇不超过两款字体\n4. 图形语言：线性图标（细描边 · 克制）\n5. 背景质感：纯净（无纹理 · 干净底色）\n6. 版式密度：疏朗（大留白 · 大字号）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
+      "prompt": "【设计方案】极简 / 北欧（id: minimal）\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#FFFFFF · surface=#FAFAFA · text=#111111 · primary=#1A1A1A · accent=#FF5A36\ncolors.chart=#1A1A1A,#FF5A36,#9A9A9A,#D9D9D9\ntypography.head=\"HarmonyOS Sans SC\" · body=\"HarmonyOS Sans SC\" · weight=800 · letterSpacing=0em\nradius=10px · pad=58px · gap=28px · title=47.8px · body=21.8px\ncontrast.body=18.9:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：极简 / 北欧（高留白 · 单焦点 · 2-3 色）｜适用：投资人路演、高管简报、产品发布等需要\"少而有力\"的正式场合。\n2. 配色方案：黑白极简｜底色 #FFFFFF · 面板 #FAFAFA · 主色 #1A1A1A · 强调 #FF5A36 · 文字 #111111\n3. 字体搭配：黑体 · 现代｜标题 800 字重，全篇不超过两款字体\n4. 图形语言：线性图标（细描边 · 克制）\n5. 背景质感：纯净（无纹理 · 干净底色）\n6. 版式密度：疏朗（大留白 · 大字号）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
     },
     {
       "id": "keynote",
@@ -228,6 +229,7 @@
       "name": "主题演讲",
       "en": "Keynote · Hero",
       "category": "classic",
+      "url": "https://lalalahulala.github.io/ppt-aesthetic-forge/?g=keynote",
       "dna": "AF:keynote:inkblue:sans:photo:clean:airy:jeii",
       "template": "keynote",
       "mood": "light",
@@ -270,7 +272,7 @@
           "titleSizePx": 47.8,
           "bodySizePx": 21.8
         },
-        "cssVars": ":root{\n  /* 审美捏脸台 · AF:keynote:inkblue:sans:photo:clean:airy:jeii */\n  --ppt-bg:#F5F7FA; --ppt-surface:#FFFFFF; --ppt-text:#1B2A4A; --ppt-sub:#5B6B82;\n  --ppt-primary:#17324D; --ppt-accent:#2E6FDB;\n  --ppt-chart-1:#2E6FDB; --ppt-chart-2:#7FA8E8; --ppt-chart-3:#17324D; --ppt-chart-4:#B9CCE9;\n  --ppt-font-head:\"HarmonyOS Sans SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif; --ppt-font-body:\"HarmonyOS Sans SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif;\n  --ppt-head-weight:800; --ppt-head-spacing:0em;\n  --ppt-radius:10px; --ppt-pad:58px; --ppt-gap:28px;\n  --ppt-title-size:47.8px; --ppt-body-size:21.8px;\n}"
+        "cssVars": ":root{\n  /* 审美捏脸台 · keynote · 主题演讲 */\n  --ppt-bg:#F5F7FA; --ppt-surface:#FFFFFF; --ppt-text:#1B2A4A; --ppt-sub:#5B6B82;\n  --ppt-primary:#17324D; --ppt-accent:#2E6FDB;\n  --ppt-chart-1:#2E6FDB; --ppt-chart-2:#7FA8E8; --ppt-chart-3:#17324D; --ppt-chart-4:#B9CCE9;\n  --ppt-font-head:\"HarmonyOS Sans SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif; --ppt-font-body:\"HarmonyOS Sans SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif;\n  --ppt-head-weight:800; --ppt-head-spacing:0em;\n  --ppt-radius:10px; --ppt-pad:58px; --ppt-gap:28px;\n  --ppt-title-size:47.8px; --ppt-body-size:21.8px;\n}"
       },
       "contrast": {
         "body": 13.25,
@@ -282,7 +284,7 @@
         "score": 100,
         "grade": "S"
       },
-      "prompt": "【PPT 审美DNA】AF:keynote:inkblue:sans:photo:clean:airy:jeii\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#F5F7FA · surface=#FFFFFF · text=#1B2A4A · primary=#17324D · accent=#2E6FDB\ncolors.chart=#2E6FDB,#7FA8E8,#17324D,#B9CCE9\ntypography.head=\"HarmonyOS Sans SC\" · body=\"HarmonyOS Sans SC\" · weight=800 · letterSpacing=0em\nradius=10px · pad=58px · gap=28px · title=47.8px · body=21.8px\ncontrast.body=13.3:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：主题演讲（Hero 大字 · 高级留白）｜适用：产品发布、TED 式主题演讲、品牌宣发等需要舞台感与金句的场合。\n2. 配色方案：墨蓝商务｜底色 #F5F7FA · 面板 #FFFFFF · 主色 #17324D · 强调 #2E6FDB · 文字 #1B2A4A\n3. 字体搭配：黑体 · 现代｜标题 800 字重，全篇不超过两款字体\n4. 图形语言：摄影留白（图片主角 · 大图叙事）\n5. 背景质感：纯净（无纹理 · 干净底色）\n6. 版式密度：疏朗（大留白 · 大字号）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
+      "prompt": "【设计方案】主题演讲（id: keynote）\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#F5F7FA · surface=#FFFFFF · text=#1B2A4A · primary=#17324D · accent=#2E6FDB\ncolors.chart=#2E6FDB,#7FA8E8,#17324D,#B9CCE9\ntypography.head=\"HarmonyOS Sans SC\" · body=\"HarmonyOS Sans SC\" · weight=800 · letterSpacing=0em\nradius=10px · pad=58px · gap=28px · title=47.8px · body=21.8px\ncontrast.body=13.3:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：主题演讲（Hero 大字 · 高级留白）｜适用：产品发布、TED 式主题演讲、品牌宣发等需要舞台感与金句的场合。\n2. 配色方案：墨蓝商务｜底色 #F5F7FA · 面板 #FFFFFF · 主色 #17324D · 强调 #2E6FDB · 文字 #1B2A4A\n3. 字体搭配：黑体 · 现代｜标题 800 字重，全篇不超过两款字体\n4. 图形语言：摄影留白（图片主角 · 大图叙事）\n5. 背景质感：纯净（无纹理 · 干净底色）\n6. 版式密度：疏朗（大留白 · 大字号）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
     },
     {
       "id": "consulting",
@@ -290,6 +292,7 @@
       "name": "咨询报告",
       "en": "Consulting · MBB",
       "category": "business",
+      "url": "https://lalalahulala.github.io/ppt-aesthetic-forge/?g=consulting",
       "dna": "AF:consulting:inkblue:sans:datagrid:clean:dense:jeii",
       "template": "consulting",
       "mood": "light",
@@ -332,7 +335,7 @@
           "titleSizePx": 31.2,
           "bodySizePx": 15.6
         },
-        "cssVars": ":root{\n  /* 审美捏脸台 · AF:consulting:inkblue:sans:datagrid:clean:dense:jeii */\n  --ppt-bg:#F5F7FA; --ppt-surface:#FFFFFF; --ppt-text:#1B2A4A; --ppt-sub:#5B6B82;\n  --ppt-primary:#17324D; --ppt-accent:#2E6FDB;\n  --ppt-chart-1:#2E6FDB; --ppt-chart-2:#7FA8E8; --ppt-chart-3:#17324D; --ppt-chart-4:#B9CCE9;\n  --ppt-font-head:\"HarmonyOS Sans SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif; --ppt-font-body:\"HarmonyOS Sans SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif;\n  --ppt-head-weight:800; --ppt-head-spacing:0em;\n  --ppt-radius:10px; --ppt-pad:32px; --ppt-gap:14px;\n  --ppt-title-size:31.2px; --ppt-body-size:15.6px;\n}"
+        "cssVars": ":root{\n  /* 审美捏脸台 · consulting · 咨询报告 */\n  --ppt-bg:#F5F7FA; --ppt-surface:#FFFFFF; --ppt-text:#1B2A4A; --ppt-sub:#5B6B82;\n  --ppt-primary:#17324D; --ppt-accent:#2E6FDB;\n  --ppt-chart-1:#2E6FDB; --ppt-chart-2:#7FA8E8; --ppt-chart-3:#17324D; --ppt-chart-4:#B9CCE9;\n  --ppt-font-head:\"HarmonyOS Sans SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif; --ppt-font-body:\"HarmonyOS Sans SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif;\n  --ppt-head-weight:800; --ppt-head-spacing:0em;\n  --ppt-radius:10px; --ppt-pad:32px; --ppt-gap:14px;\n  --ppt-title-size:31.2px; --ppt-body-size:15.6px;\n}"
       },
       "contrast": {
         "body": 13.25,
@@ -344,7 +347,7 @@
         "score": 100,
         "grade": "S"
       },
-      "prompt": "【PPT 审美DNA】AF:consulting:inkblue:sans:datagrid:clean:dense:jeii\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#F5F7FA · surface=#FFFFFF · text=#1B2A4A · primary=#17324D · accent=#2E6FDB\ncolors.chart=#2E6FDB,#7FA8E8,#17324D,#B9CCE9\ntypography.head=\"HarmonyOS Sans SC\" · body=\"HarmonyOS Sans SC\" · weight=800 · letterSpacing=0em\nradius=10px · pad=32px · gap=14px · title=31.2px · body=15.6px\ncontrast.body=13.3:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：咨询报告（结论前置 · 单页单结论 · 克制配色）｜适用：战略咨询、董事会汇报、经营复盘等\"一页一个结论\"的决策场合。\n2. 配色方案：墨蓝商务｜底色 #F5F7FA · 面板 #FFFFFF · 主色 #17324D · 强调 #2E6FDB · 文字 #1B2A4A\n3. 字体搭配：黑体 · 现代｜标题 800 字重，全篇不超过两款字体\n4. 图形语言：数据网格（网格线 · 精确）\n5. 背景质感：纯净（无纹理 · 干净底色）\n6. 版式密度：高信息（小字号 · 多要点）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
+      "prompt": "【设计方案】咨询报告（id: consulting）\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#F5F7FA · surface=#FFFFFF · text=#1B2A4A · primary=#17324D · accent=#2E6FDB\ncolors.chart=#2E6FDB,#7FA8E8,#17324D,#B9CCE9\ntypography.head=\"HarmonyOS Sans SC\" · body=\"HarmonyOS Sans SC\" · weight=800 · letterSpacing=0em\nradius=10px · pad=32px · gap=14px · title=31.2px · body=15.6px\ncontrast.body=13.3:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：咨询报告（结论前置 · 单页单结论 · 克制配色）｜适用：战略咨询、董事会汇报、经营复盘等\"一页一个结论\"的决策场合。\n2. 配色方案：墨蓝商务｜底色 #F5F7FA · 面板 #FFFFFF · 主色 #17324D · 强调 #2E6FDB · 文字 #1B2A4A\n3. 字体搭配：黑体 · 现代｜标题 800 字重，全篇不超过两款字体\n4. 图形语言：数据网格（网格线 · 精确）\n5. 背景质感：纯净（无纹理 · 干净底色）\n6. 版式密度：高信息（小字号 · 多要点）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
     },
     {
       "id": "editorial",
@@ -352,6 +355,7 @@
       "name": "杂志编辑",
       "en": "Editorial · Magazine",
       "category": "editorial",
+      "url": "https://lalalahulala.github.io/ppt-aesthetic-forge/?g=editorial",
       "dna": "AF:editorial:earth:serif:photo:ink:standard:jeii",
       "template": "editorial",
       "mood": "light",
@@ -394,7 +398,7 @@
           "titleSizePx": 39.5,
           "bodySizePx": 18.7
         },
-        "cssVars": ":root{\n  /* 审美捏脸台 · AF:editorial:earth:serif:photo:ink:standard:jeii */\n  --ppt-bg:#F7F3EC; --ppt-surface:#FFFFFF; --ppt-text:#2B2620; --ppt-sub:#716758;\n  --ppt-primary:#8A5A3B; --ppt-accent:#D96C3F;\n  --ppt-chart-1:#D96C3F; --ppt-chart-2:#8A5A3B; --ppt-chart-3:#C8A97E; --ppt-chart-4:#5C4A3A;\n  --ppt-font-head:\"Noto Serif SC\",\"Songti SC\",\"SimSun\",serif; --ppt-font-body:\"Noto Serif SC\",\"Songti SC\",\"SimSun\",serif;\n  --ppt-head-weight:700; --ppt-head-spacing:0.01em;\n  --ppt-radius:10px; --ppt-pad:46px; --ppt-gap:20px;\n  --ppt-title-size:39.5px; --ppt-body-size:18.7px;\n}"
+        "cssVars": ":root{\n  /* 审美捏脸台 · editorial · 杂志编辑 */\n  --ppt-bg:#F7F3EC; --ppt-surface:#FFFFFF; --ppt-text:#2B2620; --ppt-sub:#716758;\n  --ppt-primary:#8A5A3B; --ppt-accent:#D96C3F;\n  --ppt-chart-1:#D96C3F; --ppt-chart-2:#8A5A3B; --ppt-chart-3:#C8A97E; --ppt-chart-4:#5C4A3A;\n  --ppt-font-head:\"Noto Serif SC\",\"Songti SC\",\"SimSun\",serif; --ppt-font-body:\"Noto Serif SC\",\"Songti SC\",\"SimSun\",serif;\n  --ppt-head-weight:700; --ppt-head-spacing:0.01em;\n  --ppt-radius:10px; --ppt-pad:46px; --ppt-gap:20px;\n  --ppt-title-size:39.5px; --ppt-body-size:18.7px;\n}"
       },
       "contrast": {
         "body": 13.55,
@@ -406,7 +410,7 @@
         "score": 100,
         "grade": "S"
       },
-      "prompt": "【PPT 审美DNA】AF:editorial:earth:serif:photo:ink:standard:jeii\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#F7F3EC · surface=#FFFFFF · text=#2B2620 · primary=#8A5A3B · accent=#D96C3F\ncolors.chart=#D96C3F,#8A5A3B,#C8A97E,#5C4A3A\ntypography.head=\"Noto Serif SC\" · body=\"Noto Serif SC\" · weight=700 · letterSpacing=0.01em\nradius=10px · pad=46px · gap=20px · title=39.5px · body=18.7px\ncontrast.body=13.6:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：杂志编辑（大图叙事 · 非对称版式 · 衬线反差）｜适用：品牌手册、生活方式产品、展览与人物专题等重视叙事质感的场合。\n2. 配色方案：暖大地杂志｜底色 #F7F3EC · 面板 #FFFFFF · 主色 #8A5A3B · 强调 #D96C3F · 文字 #2B2620\n3. 字体搭配：宋体 · 风骨｜标题 700 字重，全篇不超过两款字体\n4. 图形语言：摄影留白（图片主角 · 大图叙事）\n5. 背景质感：水墨晕染（墨韵渐变 · 东方）\n6. 版式密度：标准（均衡节奏 · 通用）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
+      "prompt": "【设计方案】杂志编辑（id: editorial）\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#F7F3EC · surface=#FFFFFF · text=#2B2620 · primary=#8A5A3B · accent=#D96C3F\ncolors.chart=#D96C3F,#8A5A3B,#C8A97E,#5C4A3A\ntypography.head=\"Noto Serif SC\" · body=\"Noto Serif SC\" · weight=700 · letterSpacing=0.01em\nradius=10px · pad=46px · gap=20px · title=39.5px · body=18.7px\ncontrast.body=13.6:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：杂志编辑（大图叙事 · 非对称版式 · 衬线反差）｜适用：品牌手册、生活方式产品、展览与人物专题等重视叙事质感的场合。\n2. 配色方案：暖大地杂志｜底色 #F7F3EC · 面板 #FFFFFF · 主色 #8A5A3B · 强调 #D96C3F · 文字 #2B2620\n3. 字体搭配：宋体 · 风骨｜标题 700 字重，全篇不超过两款字体\n4. 图形语言：摄影留白（图片主角 · 大图叙事）\n5. 背景质感：水墨晕染（墨韵渐变 · 东方）\n6. 版式密度：标准（均衡节奏 · 通用）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
     },
     {
       "id": "darktech",
@@ -414,6 +418,7 @@
       "name": "暗色科技",
       "en": "Dark Tech · Future",
       "category": "tech",
+      "url": "https://lalalahulala.github.io/ppt-aesthetic-forge/?g=darktech",
       "dna": "AF:darktech:deepnavy:mono:glow:grid:standard:jeii",
       "template": "darktech",
       "mood": "dark",
@@ -456,7 +461,7 @@
           "titleSizePx": 39.5,
           "bodySizePx": 18.7
         },
-        "cssVars": ":root{\n  /* 审美捏脸台 · AF:darktech:deepnavy:mono:glow:grid:standard:jeii */\n  --ppt-bg:#0B1526; --ppt-surface:#121E33; --ppt-text:#E8EEF6; --ppt-sub:#8DA2B8;\n  --ppt-primary:#4D8DFF; --ppt-accent:#00D4FF;\n  --ppt-chart-1:#00D4FF; --ppt-chart-2:#4D8DFF; --ppt-chart-3:#2E5CBF; --ppt-chart-4:#17324D;\n  --ppt-font-head:\"JetBrains Mono\",\"Cascadia Code\",Consolas,monospace; --ppt-font-body:\"JetBrains Mono\",\"Cascadia Code\",Consolas,monospace;\n  --ppt-head-weight:700; --ppt-head-spacing:-0.01em;\n  --ppt-radius:10px; --ppt-pad:46px; --ppt-gap:20px;\n  --ppt-title-size:39.5px; --ppt-body-size:18.7px;\n}"
+        "cssVars": ":root{\n  /* 审美捏脸台 · darktech · 暗色科技 */\n  --ppt-bg:#0B1526; --ppt-surface:#121E33; --ppt-text:#E8EEF6; --ppt-sub:#8DA2B8;\n  --ppt-primary:#4D8DFF; --ppt-accent:#00D4FF;\n  --ppt-chart-1:#00D4FF; --ppt-chart-2:#4D8DFF; --ppt-chart-3:#2E5CBF; --ppt-chart-4:#17324D;\n  --ppt-font-head:\"JetBrains Mono\",\"Cascadia Code\",Consolas,monospace; --ppt-font-body:\"JetBrains Mono\",\"Cascadia Code\",Consolas,monospace;\n  --ppt-head-weight:700; --ppt-head-spacing:-0.01em;\n  --ppt-radius:10px; --ppt-pad:46px; --ppt-gap:20px;\n  --ppt-title-size:39.5px; --ppt-body-size:18.7px;\n}"
       },
       "contrast": {
         "body": 15.65,
@@ -468,7 +473,7 @@
         "score": 100,
         "grade": "S"
       },
-      "prompt": "【PPT 审美DNA】AF:darktech:deepnavy:mono:glow:grid:standard:jeii\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#0B1526 · surface=#121E33 · text=#E8EEF6 · primary=#4D8DFF · accent=#00D4FF\ncolors.chart=#00D4FF,#4D8DFF,#2E5CBF,#17324D\ntypography.head=\"JetBrains Mono\" · body=\"JetBrains Mono\" · weight=700 · letterSpacing=-0.01em\nradius=10px · pad=46px · gap=20px · title=39.5px · body=18.7px\ncontrast.body=15.7:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：暗色科技（深色底 · 霓虹点缀 · 未来感）｜适用：科技产品发布、AI / 数据平台介绍、开发者大会等偏未来的场合。\n2. 配色方案：深海军团｜底色 #0B1526 · 面板 #121E33 · 主色 #4D8DFF · 强调 #00D4FF · 文字 #E8EEF6\n3. 字体搭配：等宽 · 极客｜标题 700 字重，全篇不超过两款字体\n4. 图形语言：渐变光晕（渐变球 · 辉光）\n5. 背景质感：网格线（坐标网格 · 工程感）\n6. 版式密度：标准（均衡节奏 · 通用）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
+      "prompt": "【设计方案】暗色科技（id: darktech）\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#0B1526 · surface=#121E33 · text=#E8EEF6 · primary=#4D8DFF · accent=#00D4FF\ncolors.chart=#00D4FF,#4D8DFF,#2E5CBF,#17324D\ntypography.head=\"JetBrains Mono\" · body=\"JetBrains Mono\" · weight=700 · letterSpacing=-0.01em\nradius=10px · pad=46px · gap=20px · title=39.5px · body=18.7px\ncontrast.body=15.7:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：暗色科技（深色底 · 霓虹点缀 · 未来感）｜适用：科技产品发布、AI / 数据平台介绍、开发者大会等偏未来的场合。\n2. 配色方案：深海军团｜底色 #0B1526 · 面板 #121E33 · 主色 #4D8DFF · 强调 #00D4FF · 文字 #E8EEF6\n3. 字体搭配：等宽 · 极客｜标题 700 字重，全篇不超过两款字体\n4. 图形语言：渐变光晕（渐变球 · 辉光）\n5. 背景质感：网格线（坐标网格 · 工程感）\n6. 版式密度：标准（均衡节奏 · 通用）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
     },
     {
       "id": "guochao",
@@ -476,6 +481,7 @@
       "name": "新中式",
       "en": "New Chinese",
       "category": "human",
+      "url": "https://lalalahulala.github.io/ppt-aesthetic-forge/?g=guochao",
       "dna": "AF:guochao:inkwash:kai:hand:ink:airy:jeii",
       "template": "guochao",
       "mood": "ink",
@@ -518,7 +524,7 @@
           "titleSizePx": 47.8,
           "bodySizePx": 21.8
         },
-        "cssVars": ":root{\n  /* 审美捏脸台 · AF:guochao:inkwash:kai:hand:ink:airy:jeii */\n  --ppt-bg:#F5F2EB; --ppt-surface:#FFFFFF; --ppt-text:#1A1A1A; --ppt-sub:#6E6E6E;\n  --ppt-primary:#1A1A1A; --ppt-accent:#B5451B;\n  --ppt-chart-1:#1A1A1A; --ppt-chart-2:#B5451B; --ppt-chart-3:#8A8577; --ppt-chart-4:#D8D2C4;\n  --ppt-font-head:\"Kaiti SC\",\"STKaiti\",\"KaiTi\",serif; --ppt-font-body:\"Kaiti SC\",\"STKaiti\",\"KaiTi\",serif;\n  --ppt-head-weight:600; --ppt-head-spacing:0.03em;\n  --ppt-radius:10px; --ppt-pad:58px; --ppt-gap:28px;\n  --ppt-title-size:47.8px; --ppt-body-size:21.8px;\n}"
+        "cssVars": ":root{\n  /* 审美捏脸台 · guochao · 新中式 */\n  --ppt-bg:#F5F2EB; --ppt-surface:#FFFFFF; --ppt-text:#1A1A1A; --ppt-sub:#6E6E6E;\n  --ppt-primary:#1A1A1A; --ppt-accent:#B5451B;\n  --ppt-chart-1:#1A1A1A; --ppt-chart-2:#B5451B; --ppt-chart-3:#8A8577; --ppt-chart-4:#D8D2C4;\n  --ppt-font-head:\"Kaiti SC\",\"STKaiti\",\"KaiTi\",serif; --ppt-font-body:\"Kaiti SC\",\"STKaiti\",\"KaiTi\",serif;\n  --ppt-head-weight:600; --ppt-head-spacing:0.03em;\n  --ppt-radius:10px; --ppt-pad:58px; --ppt-gap:28px;\n  --ppt-title-size:47.8px; --ppt-body-size:21.8px;\n}"
       },
       "contrast": {
         "body": 15.57,
@@ -530,7 +536,7 @@
         "score": 100,
         "grade": "S"
       },
-      "prompt": "【PPT 审美DNA】AF:guochao:inkwash:kai:hand:ink:airy:jeii\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#F5F2EB · surface=#FFFFFF · text=#1A1A1A · primary=#1A1A1A · accent=#B5451B\ncolors.chart=#1A1A1A,#B5451B,#8A8577,#D8D2C4\ntypography.head=\"Kaiti SC\" · body=\"Kaiti SC\" · weight=600 · letterSpacing=0.03em\nradius=10px · pad=58px · gap=28px · title=47.8px · body=21.8px\ncontrast.body=15.6:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：新中式（水墨留白 · 朱砂点缀 · 传统纹样克制）｜适用：文化传播、文旅推广、新消费品牌、节庆与政企文化项目。\n2. 配色方案：水墨东方｜底色 #F5F2EB · 面板 #FFFFFF · 主色 #1A1A1A · 强调 #B5451B · 文字 #1A1A1A\n3. 字体搭配：楷体 · 写意｜标题 600 字重，全篇不超过两款字体\n4. 图形语言：手绘涂鸦（虚线 · 草稿感）\n5. 背景质感：水墨晕染（墨韵渐变 · 东方）\n6. 版式密度：疏朗（大留白 · 大字号）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
+      "prompt": "【设计方案】新中式（id: guochao）\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#F5F2EB · surface=#FFFFFF · text=#1A1A1A · primary=#1A1A1A · accent=#B5451B\ncolors.chart=#1A1A1A,#B5451B,#8A8577,#D8D2C4\ntypography.head=\"Kaiti SC\" · body=\"Kaiti SC\" · weight=600 · letterSpacing=0.03em\nradius=10px · pad=58px · gap=28px · title=47.8px · body=21.8px\ncontrast.body=15.6:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：新中式（水墨留白 · 朱砂点缀 · 传统纹样克制）｜适用：文化传播、文旅推广、新消费品牌、节庆与政企文化项目。\n2. 配色方案：水墨东方｜底色 #F5F2EB · 面板 #FFFFFF · 主色 #1A1A1A · 强调 #B5451B · 文字 #1A1A1A\n3. 字体搭配：楷体 · 写意｜标题 600 字重，全篇不超过两款字体\n4. 图形语言：手绘涂鸦（虚线 · 草稿感）\n5. 背景质感：水墨晕染（墨韵渐变 · 东方）\n6. 版式密度：疏朗（大留白 · 大字号）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
     },
     {
       "id": "academic",
@@ -538,6 +544,7 @@
       "name": "学术答辩",
       "en": "Academic",
       "category": "formal",
+      "url": "https://lalalahulala.github.io/ppt-aesthetic-forge/?g=academic",
       "dna": "AF:academic:inkblue:serif:line:clean:standard:jeii",
       "template": "academic",
       "mood": "light",
@@ -580,7 +587,7 @@
           "titleSizePx": 39.5,
           "bodySizePx": 18.7
         },
-        "cssVars": ":root{\n  /* 审美捏脸台 · AF:academic:inkblue:serif:line:clean:standard:jeii */\n  --ppt-bg:#F5F7FA; --ppt-surface:#FFFFFF; --ppt-text:#1B2A4A; --ppt-sub:#5B6B82;\n  --ppt-primary:#17324D; --ppt-accent:#2E6FDB;\n  --ppt-chart-1:#2E6FDB; --ppt-chart-2:#7FA8E8; --ppt-chart-3:#17324D; --ppt-chart-4:#B9CCE9;\n  --ppt-font-head:\"Noto Serif SC\",\"Songti SC\",\"SimSun\",serif; --ppt-font-body:\"Noto Serif SC\",\"Songti SC\",\"SimSun\",serif;\n  --ppt-head-weight:700; --ppt-head-spacing:0.01em;\n  --ppt-radius:10px; --ppt-pad:46px; --ppt-gap:20px;\n  --ppt-title-size:39.5px; --ppt-body-size:18.7px;\n}"
+        "cssVars": ":root{\n  /* 审美捏脸台 · academic · 学术答辩 */\n  --ppt-bg:#F5F7FA; --ppt-surface:#FFFFFF; --ppt-text:#1B2A4A; --ppt-sub:#5B6B82;\n  --ppt-primary:#17324D; --ppt-accent:#2E6FDB;\n  --ppt-chart-1:#2E6FDB; --ppt-chart-2:#7FA8E8; --ppt-chart-3:#17324D; --ppt-chart-4:#B9CCE9;\n  --ppt-font-head:\"Noto Serif SC\",\"Songti SC\",\"SimSun\",serif; --ppt-font-body:\"Noto Serif SC\",\"Songti SC\",\"SimSun\",serif;\n  --ppt-head-weight:700; --ppt-head-spacing:0.01em;\n  --ppt-radius:10px; --ppt-pad:46px; --ppt-gap:20px;\n  --ppt-title-size:39.5px; --ppt-body-size:18.7px;\n}"
       },
       "contrast": {
         "body": 13.25,
@@ -592,7 +599,7 @@
         "score": 100,
         "grade": "S"
       },
-      "prompt": "【PPT 审美DNA】AF:academic:inkblue:serif:line:clean:standard:jeii\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#F5F7FA · surface=#FFFFFF · text=#1B2A4A · primary=#17324D · accent=#2E6FDB\ncolors.chart=#2E6FDB,#7FA8E8,#17324D,#B9CCE9\ntypography.head=\"Noto Serif SC\" · body=\"Noto Serif SC\" · weight=700 · letterSpacing=0.01em\nradius=10px · pad=46px · gap=20px · title=39.5px · body=18.7px\ncontrast.body=13.3:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：学术答辩（严格层级 · 编号 · 引用规范）｜适用：论文答辩、学术会议、研究报告、基金申报等需要严谨可信的场合。\n2. 配色方案：墨蓝商务｜底色 #F5F7FA · 面板 #FFFFFF · 主色 #17324D · 强调 #2E6FDB · 文字 #1B2A4A\n3. 字体搭配：宋体 · 风骨｜标题 700 字重，全篇不超过两款字体\n4. 图形语言：线性图标（细描边 · 克制）\n5. 背景质感：纯净（无纹理 · 干净底色）\n6. 版式密度：标准（均衡节奏 · 通用）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
+      "prompt": "【设计方案】学术答辩（id: academic）\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#F5F7FA · surface=#FFFFFF · text=#1B2A4A · primary=#17324D · accent=#2E6FDB\ncolors.chart=#2E6FDB,#7FA8E8,#17324D,#B9CCE9\ntypography.head=\"Noto Serif SC\" · body=\"Noto Serif SC\" · weight=700 · letterSpacing=0.01em\nradius=10px · pad=46px · gap=20px · title=39.5px · body=18.7px\ncontrast.body=13.3:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：学术答辩（严格层级 · 编号 · 引用规范）｜适用：论文答辩、学术会议、研究报告、基金申报等需要严谨可信的场合。\n2. 配色方案：墨蓝商务｜底色 #F5F7FA · 面板 #FFFFFF · 主色 #17324D · 强调 #2E6FDB · 文字 #1B2A4A\n3. 字体搭配：宋体 · 风骨｜标题 700 字重，全篇不超过两款字体\n4. 图形语言：线性图标（细描边 · 克制）\n5. 背景质感：纯净（无纹理 · 干净底色）\n6. 版式密度：标准（均衡节奏 · 通用）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
     },
     {
       "id": "gov",
@@ -600,6 +607,7 @@
       "name": "政府汇报",
       "en": "Government",
       "category": "formal",
+      "url": "https://lalalahulala.github.io/ppt-aesthetic-forge/?g=gov",
       "dna": "AF:gov:redgold:serif:block:clean:standard:jeii",
       "template": "gov",
       "mood": "light",
@@ -642,7 +650,7 @@
           "titleSizePx": 39.5,
           "bodySizePx": 18.7
         },
-        "cssVars": ":root{\n  /* 审美捏脸台 · AF:gov:redgold:serif:block:clean:standard:jeii */\n  --ppt-bg:#FFFFFF; --ppt-surface:#FBF6EE; --ppt-text:#3A1F1F; --ppt-sub:#8A6A6A;\n  --ppt-primary:#C00000; --ppt-accent:#D4A843;\n  --ppt-chart-1:#C00000; --ppt-chart-2:#D4A843; --ppt-chart-3:#8A5A3B; --ppt-chart-4:#E8D9B8;\n  --ppt-font-head:\"Noto Serif SC\",\"Songti SC\",\"SimSun\",serif; --ppt-font-body:\"Noto Serif SC\",\"Songti SC\",\"SimSun\",serif;\n  --ppt-head-weight:700; --ppt-head-spacing:0.01em;\n  --ppt-radius:10px; --ppt-pad:46px; --ppt-gap:20px;\n  --ppt-title-size:39.5px; --ppt-body-size:18.7px;\n}"
+        "cssVars": ":root{\n  /* 审美捏脸台 · gov · 政府汇报 */\n  --ppt-bg:#FFFFFF; --ppt-surface:#FBF6EE; --ppt-text:#3A1F1F; --ppt-sub:#8A6A6A;\n  --ppt-primary:#C00000; --ppt-accent:#D4A843;\n  --ppt-chart-1:#C00000; --ppt-chart-2:#D4A843; --ppt-chart-3:#8A5A3B; --ppt-chart-4:#E8D9B8;\n  --ppt-font-head:\"Noto Serif SC\",\"Songti SC\",\"SimSun\",serif; --ppt-font-body:\"Noto Serif SC\",\"Songti SC\",\"SimSun\",serif;\n  --ppt-head-weight:700; --ppt-head-spacing:0.01em;\n  --ppt-radius:10px; --ppt-pad:46px; --ppt-gap:20px;\n  --ppt-title-size:39.5px; --ppt-body-size:18.7px;\n}"
       },
       "contrast": {
         "body": 15.05,
@@ -654,7 +662,7 @@
         "score": 100,
         "grade": "S"
       },
-      "prompt": "【PPT 审美DNA】AF:gov:redgold:serif:block:clean:standard:jeii\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#FFFFFF · surface=#FBF6EE · text=#3A1F1F · primary=#C00000 · accent=#D4A843\ncolors.chart=#C00000,#D4A843,#8A5A3B,#E8D9B8\ntypography.head=\"Noto Serif SC\" · body=\"Noto Serif SC\" · weight=700 · letterSpacing=0.01em\nradius=10px · pad=46px · gap=20px · title=39.5px · body=18.7px\ncontrast.body=15.0:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：政府汇报（红蓝庄重 · 对称端正 · 标题加粗）｜适用：政府汇报、党建宣传、年度总结、政策解读等正式政务场合。\n2. 配色方案：红金政务｜底色 #FFFFFF · 面板 #FBF6EE · 主色 #C00000 · 强调 #D4A843 · 文字 #3A1F1F\n3. 字体搭配：宋体 · 风骨｜标题 700 字重，全篇不超过两款字体\n4. 图形语言：几何色块（填充块面 · 高饱和）\n5. 背景质感：纯净（无纹理 · 干净底色）\n6. 版式密度：标准（均衡节奏 · 通用）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
+      "prompt": "【设计方案】政府汇报（id: gov）\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#FFFFFF · surface=#FBF6EE · text=#3A1F1F · primary=#C00000 · accent=#D4A843\ncolors.chart=#C00000,#D4A843,#8A5A3B,#E8D9B8\ntypography.head=\"Noto Serif SC\" · body=\"Noto Serif SC\" · weight=700 · letterSpacing=0.01em\nradius=10px · pad=46px · gap=20px · title=39.5px · body=18.7px\ncontrast.body=15.0:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：政府汇报（红蓝庄重 · 对称端正 · 标题加粗）｜适用：政府汇报、党建宣传、年度总结、政策解读等正式政务场合。\n2. 配色方案：红金政务｜底色 #FFFFFF · 面板 #FBF6EE · 主色 #C00000 · 强调 #D4A843 · 文字 #3A1F1F\n3. 字体搭配：宋体 · 风骨｜标题 700 字重，全篇不超过两款字体\n4. 图形语言：几何色块（填充块面 · 高饱和）\n5. 背景质感：纯净（无纹理 · 干净底色）\n6. 版式密度：标准（均衡节奏 · 通用）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
     },
     {
       "id": "hand",
@@ -662,6 +670,7 @@
       "name": "文艺手绘",
       "en": "Zine · Hand-drawn",
       "category": "creative",
+      "url": "https://lalalahulala.github.io/ppt-aesthetic-forge/?g=hand",
       "dna": "AF:hand:earth:round:hand:ink:airy:jeii",
       "template": "hand",
       "mood": "light",
@@ -704,7 +713,7 @@
           "titleSizePx": 47.8,
           "bodySizePx": 21.8
         },
-        "cssVars": ":root{\n  /* 审美捏脸台 · AF:hand:earth:round:hand:ink:airy:jeii */\n  --ppt-bg:#F7F3EC; --ppt-surface:#FFFFFF; --ppt-text:#2B2620; --ppt-sub:#716758;\n  --ppt-primary:#8A5A3B; --ppt-accent:#D96C3F;\n  --ppt-chart-1:#D96C3F; --ppt-chart-2:#8A5A3B; --ppt-chart-3:#C8A97E; --ppt-chart-4:#5C4A3A;\n  --ppt-font-head:\"HarmonyOS Sans SC\",\"Yuanti SC\",\"PingFang SC\",sans-serif; --ppt-font-body:\"HarmonyOS Sans SC\",\"PingFang SC\",sans-serif;\n  --ppt-head-weight:700; --ppt-head-spacing:0.01em;\n  --ppt-radius:10px; --ppt-pad:58px; --ppt-gap:28px;\n  --ppt-title-size:47.8px; --ppt-body-size:21.8px;\n}"
+        "cssVars": ":root{\n  /* 审美捏脸台 · hand · 文艺手绘 */\n  --ppt-bg:#F7F3EC; --ppt-surface:#FFFFFF; --ppt-text:#2B2620; --ppt-sub:#716758;\n  --ppt-primary:#8A5A3B; --ppt-accent:#D96C3F;\n  --ppt-chart-1:#D96C3F; --ppt-chart-2:#8A5A3B; --ppt-chart-3:#C8A97E; --ppt-chart-4:#5C4A3A;\n  --ppt-font-head:\"HarmonyOS Sans SC\",\"Yuanti SC\",\"PingFang SC\",sans-serif; --ppt-font-body:\"HarmonyOS Sans SC\",\"PingFang SC\",sans-serif;\n  --ppt-head-weight:700; --ppt-head-spacing:0.01em;\n  --ppt-radius:10px; --ppt-pad:58px; --ppt-gap:28px;\n  --ppt-title-size:47.8px; --ppt-body-size:21.8px;\n}"
       },
       "contrast": {
         "body": 13.55,
@@ -716,7 +725,7 @@
         "score": 100,
         "grade": "S"
       },
-      "prompt": "【PPT 审美DNA】AF:hand:earth:round:hand:ink:airy:jeii\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#F7F3EC · surface=#FFFFFF · text=#2B2620 · primary=#8A5A3B · accent=#D96C3F\ncolors.chart=#D96C3F,#8A5A3B,#C8A97E,#5C4A3A\ntypography.head=\"HarmonyOS Sans SC\" · body=\"HarmonyOS Sans SC\" · weight=700 · letterSpacing=0.01em\nradius=10px · pad=58px · gap=28px · title=47.8px · body=21.8px\ncontrast.body=13.6:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：文艺手绘（手绘线条 · 暖色纸感 · 涂鸦元素）｜适用：课堂教学、培训工作坊、创意提案、zine 风格的个人表达。\n2. 配色方案：暖大地杂志｜底色 #F7F3EC · 面板 #FFFFFF · 主色 #8A5A3B · 强调 #D96C3F · 文字 #2B2620\n3. 字体搭配：圆体 · 亲和｜标题 700 字重，全篇不超过两款字体\n4. 图形语言：手绘涂鸦（虚线 · 草稿感）\n5. 背景质感：水墨晕染（墨韵渐变 · 东方）\n6. 版式密度：疏朗（大留白 · 大字号）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
+      "prompt": "【设计方案】文艺手绘（id: hand）\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#F7F3EC · surface=#FFFFFF · text=#2B2620 · primary=#8A5A3B · accent=#D96C3F\ncolors.chart=#D96C3F,#8A5A3B,#C8A97E,#5C4A3A\ntypography.head=\"HarmonyOS Sans SC\" · body=\"HarmonyOS Sans SC\" · weight=700 · letterSpacing=0.01em\nradius=10px · pad=58px · gap=28px · title=47.8px · body=21.8px\ncontrast.body=13.6:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：文艺手绘（手绘线条 · 暖色纸感 · 涂鸦元素）｜适用：课堂教学、培训工作坊、创意提案、zine 风格的个人表达。\n2. 配色方案：暖大地杂志｜底色 #F7F3EC · 面板 #FFFFFF · 主色 #8A5A3B · 强调 #D96C3F · 文字 #2B2620\n3. 字体搭配：圆体 · 亲和｜标题 700 字重，全篇不超过两款字体\n4. 图形语言：手绘涂鸦（虚线 · 草稿感）\n5. 背景质感：水墨晕染（墨韵渐变 · 东方）\n6. 版式密度：疏朗（大留白 · 大字号）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
     },
     {
       "id": "pop",
@@ -724,6 +733,7 @@
       "name": "活泼波普",
       "en": "Memphis · Pop",
       "category": "creative",
+      "url": "https://lalalahulala.github.io/ppt-aesthetic-forge/?g=pop",
       "dna": "AF:pop:candy:round:block:clean:standard:jeii",
       "template": "pop",
       "mood": "light",
@@ -766,7 +776,7 @@
           "titleSizePx": 39.5,
           "bodySizePx": 18.7
         },
-        "cssVars": ":root{\n  /* 审美捏脸台 · AF:pop:candy:round:block:clean:standard:jeii */\n  --ppt-bg:#FDF4F8; --ppt-surface:#FFFFFF; --ppt-text:#3D2A3A; --ppt-sub:#7E6076;\n  --ppt-primary:#FF6B9D; --ppt-accent:#7B61FF;\n  --ppt-chart-1:#FF6B9D; --ppt-chart-2:#7B61FF; --ppt-chart-3:#FFB3D1; --ppt-chart-4:#C4B5FD;\n  --ppt-font-head:\"HarmonyOS Sans SC\",\"Yuanti SC\",\"PingFang SC\",sans-serif; --ppt-font-body:\"HarmonyOS Sans SC\",\"PingFang SC\",sans-serif;\n  --ppt-head-weight:700; --ppt-head-spacing:0.01em;\n  --ppt-radius:10px; --ppt-pad:46px; --ppt-gap:20px;\n  --ppt-title-size:39.5px; --ppt-body-size:18.7px;\n}"
+        "cssVars": ":root{\n  /* 审美捏脸台 · pop · 活泼波普 */\n  --ppt-bg:#FDF4F8; --ppt-surface:#FFFFFF; --ppt-text:#3D2A3A; --ppt-sub:#7E6076;\n  --ppt-primary:#FF6B9D; --ppt-accent:#7B61FF;\n  --ppt-chart-1:#FF6B9D; --ppt-chart-2:#7B61FF; --ppt-chart-3:#FFB3D1; --ppt-chart-4:#C4B5FD;\n  --ppt-font-head:\"HarmonyOS Sans SC\",\"Yuanti SC\",\"PingFang SC\",sans-serif; --ppt-font-body:\"HarmonyOS Sans SC\",\"PingFang SC\",sans-serif;\n  --ppt-head-weight:700; --ppt-head-spacing:0.01em;\n  --ppt-radius:10px; --ppt-pad:46px; --ppt-gap:20px;\n  --ppt-title-size:39.5px; --ppt-body-size:18.7px;\n}"
       },
       "contrast": {
         "body": 12.24,
@@ -778,7 +788,7 @@
         "score": 100,
         "grade": "S"
       },
-      "prompt": "【PPT 审美DNA】AF:pop:candy:round:block:clean:standard:jeii\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#FDF4F8 · surface=#FFFFFF · text=#3D2A3A · primary=#FF6B9D · accent=#7B61FF\ncolors.chart=#FF6B9D,#7B61FF,#FFB3D1,#C4B5FD\ntypography.head=\"HarmonyOS Sans SC\" · body=\"HarmonyOS Sans SC\" · weight=700 · letterSpacing=0.01em\nradius=10px · pad=46px · gap=20px · title=39.5px · body=18.7px\ncontrast.body=12.2:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：活泼波普（高饱和大色块 · 粗描边 · 硬阴影）｜适用：校园活动、社群营销、Z 世代品牌、创意竞赛等需要\"抓眼球\"的场合。\n2. 配色方案：糖果渐变｜底色 #FDF4F8 · 面板 #FFFFFF · 主色 #FF6B9D · 强调 #7B61FF · 文字 #3D2A3A\n3. 字体搭配：圆体 · 亲和｜标题 700 字重，全篇不超过两款字体\n4. 图形语言：几何色块（填充块面 · 高饱和）\n5. 背景质感：纯净（无纹理 · 干净底色）\n6. 版式密度：标准（均衡节奏 · 通用）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
+      "prompt": "【设计方案】活泼波普（id: pop）\n【设计令牌 DESIGN TOKENS】\ncolors.bg=#FDF4F8 · surface=#FFFFFF · text=#3D2A3A · primary=#FF6B9D · accent=#7B61FF\ncolors.chart=#FF6B9D,#7B61FF,#FFB3D1,#C4B5FD\ntypography.head=\"HarmonyOS Sans SC\" · body=\"HarmonyOS Sans SC\" · weight=700 · letterSpacing=0.01em\nradius=10px · pad=46px · gap=20px · title=39.5px · body=18.7px\ncontrast.body=12.2:1（WCAG AA 达标线 4.5:1）\n【风格定义】\n1. 设计方案：活泼波普（高饱和大色块 · 粗描边 · 硬阴影）｜适用：校园活动、社群营销、Z 世代品牌、创意竞赛等需要\"抓眼球\"的场合。\n2. 配色方案：糖果渐变｜底色 #FDF4F8 · 面板 #FFFFFF · 主色 #FF6B9D · 强调 #7B61FF · 文字 #3D2A3A\n3. 字体搭配：圆体 · 亲和｜标题 700 字重，全篇不超过两款字体\n4. 图形语言：几何色块（填充块面 · 高饱和）\n5. 背景质感：纯净（无纹理 · 干净底色）\n6. 版式密度：标准（均衡节奏 · 通用）\n7. 微调参数：强调强度 55 · 圆角 40 · 留白 50 · 字号比例 50\n执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。"
     }
   ]
 }

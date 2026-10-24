@@ -111,6 +111,7 @@ export function loadForge(htmlPath = HTML_PATH) {
   OPTS, DIMS, DIM_IDS, ATTR_KEYS, CONTENT,
   O, hexRGB, contrast, getMetrics, computeAttrs, harmony, gradeOf,
   dnaCode, promptText, cssVarsText, applyTheme,
+  shareUrl, parseShare, applyShare, embedCode,
 };`;
   new Function(script + tail)();
 
@@ -194,8 +195,12 @@ export function specFor(sel = {}) {
   // 1. 回到默认
   Object.assign(S, F.DEFAULT);
 
-  // 2. 从 DNA 或设计方案起步
-  if (sel.dna) {
+  // 2. 从分享链接 / 旧版 DNA / 设计方案起步
+  if (sel.url) {
+    const v = F.parseShare(sel.url);
+    if (!v) throw new Error(`没认出这条分享链接：${sel.url}`);
+    F.applyShare(v);
+  } else if (sel.dna) {
     Object.assign(S, parseDna(sel.dna));
   } else if (sel.design) {
     const d = F.OPTS.genre.find((x) => x.id === sel.design);
@@ -239,7 +244,8 @@ function buildSpec(F, sel) {
 
   return {
     schema: 'ppt-aesthetic-forge/spec@1',
-    dna: F.dnaCode(),
+    url: F.shareUrl(),
+    dna: F.dnaCode(),          // 旧版编码，仅为兼容保留；新代码请用 url
     design: {
       id: design.id, name: design.name, en: design.en, cat: design.cat,
       template: design.tpl, mood: design.mood, desc: design.desc,
@@ -284,7 +290,7 @@ function buildSpec(F, sel) {
 /* ---------- 给 agent 直接读的 markdown 简报 ---------- */
 
 export function briefMarkdown(spec) {
-  const { design: d, config: c, tokens: tk, contrast: ct, dna } = spec;
+  const { design: d, config: c, tokens: tk, contrast: ct, url } = spec;
   const sw = (hex, label) => `\`${hex}\` ${label}`;
   return [
     `## 设计方案：${d.name}${d.en ? `（${d.en}）` : ''}`,
@@ -321,7 +327,9 @@ export function briefMarkdown(spec) {
     ``,
     `## 复现`,
     ``,
-    `DNA 编码（可粘贴回捏脸台还原）：\`${dna}\``,
+    `分享链接（打开即是这套审美，可手改参数）：`,
+    ``,
+    `\`${url}\``,
   ].join('\n');
 }
 

@@ -15,6 +15,25 @@
 **不要读 `ppt-aesthetic-forge.html`**：118KB 的交互界面，是给人点着用的，不是给模型读的规格。
 它的数据全部在上面三个文件里，体积小 95%。
 
+## 最省的一条路：只回一条链接
+
+如果用户只是想看看某个风格长什么样、或者要拿去做对比，**不要生成任何代码，直接给一条 URL**：
+
+```
+https://lalalahulala.github.io/ppt-aesthetic-forge/?g=editorial
+```
+
+打开就是那套方案的实时画面。参数含义：
+
+- `g` 设计方案 id（上面 10 个之一），**只有这个必填**
+- `c` 配色 / `t` 字体 / `f` 图形 / `x` 质感 / `d` 密度：省略即用该方案的默认值
+- `a` `r` `w` `s`：强调强度 / 圆角 / 留白 / 字号比例，0–100
+- `embed=1` 只留画面（可直接 iframe 嵌进文档、Notion、飞书）
+
+例子：`https://lalalahulala.github.io/ppt-aesthetic-forge/?g=guochao&a=80&embed=1`
+
+这条路**不消耗你的 token**，也不用你渲染。只有当用户要成品文件时，才去读 spec.md。
+
 ## 没说使用场合时怎么选
 
 用户往往只给主题、不说场合。按内容性质挑，不要靠颜色好不好看：
@@ -83,4 +102,4 @@
 
 GitHub 直连不稳时，把上面所有 `https://lalalahulala.github.io/ppt-aesthetic-forge/` 换成 `https://cdn.jsdelivr.net/gh/lalalaHulala/ppt-aesthetic-forge@main/`（jsDelivr 镜像，同样路径）。
 
-想锁版本（下游批量生成时避免上游改动导致输出漂移），把 `@main` 换成 tag，例如 `@v1.2.0`。
+想锁版本（下游批量生成时避免上游改动导致输出漂移），把 `@main` 换成 tag，例如 `@v1.3.0`。

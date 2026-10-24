@@ -6,7 +6,8 @@
  *   paf list
  *   paf spec --design keynote --json
  *   paf spec --design darktech --palette neon --md
- *   paf dna AF:keynote:inkblue:sans:photo:clean:airy:...
+ *   paf url '?g=editorial&a=80'
+ *   paf dna AF:keynote:inkblue:sans:photo:clean:airy:...   （旧版编码，仍兼容）
  */
 
 import { listDesigns, listDimensions, specFor, parseDna, briefMarkdown } from '../tools/forge-core.mjs';
@@ -22,6 +23,7 @@ function parseArgs(list) {
     else if (a === '--prompt') out.prompt = true;
     else if (a === '--css') out.css = true;
     else if (a === '--dna') out.dnaOnly = true;
+    else if (a === '--url') out.urlOnly = true;
     else if (a === '--help' || a === '-h') out.help = true;
     else if (a.startsWith('--')) {
       const key = a.slice(2);
@@ -39,9 +41,10 @@ const HELP = `paf —— PPT 审美捏脸台 · 命令行
   paf list --json                   同上，JSON
   paf dims                          列出 5 个微调维度及全部取值
   paf spec --design <id>            产出一份规格（默认 markdown 简报）
-  paf dna <编码>                    用 DNA 编码还原规格
+  paf url '<链接或查询串>'           还原一条分享链接里的审美
+  paf dna <编码>                    还原旧版 DNA 编码（已弃用，仅兼容）
 
-spec / dna 的选项
+spec / url 的选项
   --palette  <id>    配色   --type     <id>  字体
   --graphics <id>    图形   --texture  <id>  质感
   --density  <id>    密度   --accent   0-100
@@ -52,12 +55,14 @@ spec / dna 的选项
   --md              人读简报（给 agent 塞进上下文）
   --prompt          只要提示词
   --css             只要 CSS 变量
-  --dna             只要 DNA 编码
+  --url             只要分享链接
+  --dna             只要旧版 DNA 编码
 
 例子
   paf spec --design consulting --json
   paf spec --design keynote --palette mono --density dense
-  paf spec --dna AF:minimal:mono:sans:line:clean:airy:...
+  paf spec --design editorial --url
+  paf url '?g=editorial&a=80&r=10'
 
 退出码：0 成功，1 参数错误。`;
 
@@ -129,13 +134,17 @@ function run() {
         scale: a.scale,
       };
       if (!sel.design) die('spec 需要 --design <id>，可先跑 paf list');
+    } else if (cmd === 'url') {
+      const u = a._[1] || a.url;
+      if (!u) die("url 需要一条链接或查询串，例如 '?g=editorial&a=80'");
+      sel = { url: u };
     } else if (cmd === 'dna') {
       const code = a._[1] || a.code;
       if (!code) die('dna 需要一个编码，例如 AF:minimal:mono:sans:line:clean:airy:...');
       parseDna(code); // 提前抛错
       sel = { dna: code };
     } else {
-      die(`未知命令「${cmd}」，可用：list / dims / spec / dna`);
+      die(`未知命令「${cmd}」，可用：list / dims / spec / url / dna`);
     }
 
     // 过滤掉 undefined
@@ -149,6 +158,8 @@ function run() {
       process.stdout.write(spec.prompt + '\n');
     } else if (a.css) {
       process.stdout.write(spec.tokens.cssVars + '\n');
+    } else if (a.urlOnly) {
+      process.stdout.write(spec.url + '\n');
     } else if (a.dnaOnly) {
       process.stdout.write(spec.dna + '\n');
     } else {

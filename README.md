@@ -44,7 +44,7 @@ AI 会用工具，就给它一条链接；不会用工具，就给它一段话�
 
 还有两条**不消耗 token** 的路子：
 
-- **直达链接**：`?g=editorial` 打开杂志编辑那套，`?dna=<DNA>` 还原任意配置，`&page=chart` 指定页。AI 只要给用户一条 URL，不用它自己渲染。
+- **直达链接**：`?g=editorial` 打开杂志编辑那套；拖过滑杆就自动带上 `&a=80&r=10`，`&page=chart` 指定页。AI 只要给用户一条 URL，不用它自己渲染。
 - **嵌入模式**：`&embed=1` 只留画面、零界面，可直接 iframe 到文档 / Notion / 飞书。
 
 ```html
@@ -90,7 +90,7 @@ GitHub Pages 没有版本路径，锁版本走 jsDelivr。托管和 CDN 都在�
 - 前后对比模式、专注模式（隐藏侧栏全屏看）
 
 **输出（拿）**
-- **审美 DNA**：一行字符串编码整套配置，可分享、可导入
+- **分享链接**：一条 URL 编码整套配置，点开即是同一套审美，参数可手改
 - **提示词**：带设计令牌（色值 / 字级 / 圆角 / 间距 / 对比度），直接复制给 AI
 - **CSS 变量**：`:root` 就绪，粘到项目里就能用
 - **HTML 幻灯片**：导出成可直接放映的单文件
@@ -168,19 +168,39 @@ python -m http.server 8000
 
 ![输出面板](docs/screenshots/03-output.png)
 
-**审美 DNA** 是一行可分享的编码，8 段：
+**分享链接**只写「跟方案默认值不一样」的部分，所以大多数人拿到的就是一条十几个字符的 URL：
 
 ```
-AF:minimal:inkblue:sans:line:clean:standard:jell
-   └ 方案  └ 配色   └ 字体 └ 图形 └ 质感  └ 密度   └ 四项滑杆值（36 进制压缩）
+https://lalalahulala.github.io/ppt-aesthetic-forge/?g=editorial
 ```
 
-导入「审美 DNA」输入框即可复现整套配置。
+顺手拖了几下微调滑杆，参数才自己长出来：
+
+```
+?g=editorial&a=80&r=10
+   方案 id  强调强度 圆角
+```
+
+全部参数，省略即取该方案的默认值：
+
+| 参数 | 含义 | 取值 |
+|---|---|---|
+| `g` | 设计方案 | `minimal` `keynote` `consulting` `editorial` `darktech` `guochao` `academic` `gov` `hand` `pop` |
+| `c` | 配色 | `mono` `inkblue` `earth` `deepnavy` `inkwash` `redgold` `candy` `neon` |
+| `t` | 字体 | `sans` `serif` `mono` `round` `kai` |
+| `f` | 图形 | `line` `block` `glow` `photo` `hand` `datagrid` |
+| `x` | 质感 | `clean` `grid` `glass` `neon` `ink` |
+| `d` | 密度 | `airy` `standard` `dense` |
+| `a` `r` `w` `s` | 强调强度 / 圆角 / 留白 / 字号比例 | 0–100 |
+| `page` | 直接翻页 | `1` `2` `3` |
+| `embed` | 只留画面 | `1` |
+
+想改哪一项直接改 URL 就行，不必回到界面里点。
 
 **提示词** 可以整段交给任何 PPT 生成工具：
 
 ```
-【PPT 审美DNA】AF:minimal:inkblue:sans:line:clean:standard:jell
+【设计方案】极简 / 北欧（id: minimal）
 【设计令牌 DESIGN TOKENS】
 colors.bg=#F5F7FA · surface=#FFFFFF · text=#1B2A4A · primary=#17324D · accent=#2E6FDB
 typography.head=HarmonyOS Sans SC · weight=800 · letterSpacing=0em
@@ -205,14 +225,15 @@ node bin/paf.mjs list                            # 10 套方案 + 好处 + 场�
 node bin/paf.mjs spec --design keynote           # 规格简报（markdown）
 node bin/paf.mjs spec --design darktech --json    # 完整 JSON
 node bin/paf.mjs spec --design consulting --prompt  # 只要提示词
-node bin/paf.mjs dna AF:keynote:inkblue:sans:photo:clean:airy:jeii
+node bin/paf.mjs spec --design editorial --url   # 只要分享链接
+node bin/paf.mjs url '?g=guochao&a=80'           # 从链接还原规格
 ```
 
 规格 JSON 长这样（节选）：
 
 ```json
 {
-  "dna": "AF:darktech:deepnavy:mono:glow:grid:standard:jeii",
+  "url": "https://lalalahulala.github.io/ppt-aesthetic-forge/?g=darktech",
   "design": { "id": "darktech", "template": "darktech", "mood": "dark" },
   "tokens": {
     "colors": { "bg": "#0B1526", "text": "#E8EEF6", "accent": "#00D4FF", "chart": ["#00D4FF", "..."] },
@@ -236,7 +257,7 @@ node bin/paf.mjs dna AF:keynote:inkblue:sans:photo:clean:airy:jeii
 }
 ```
 
-暴露 4 个工具：`list_design_presets`、`get_design_spec`、`apply_design_dna`、`get_style_prompt`。手写 JSON-RPC，没有第三方依赖。
+暴露 5 个工具：`list_design_presets`、`get_design_spec`、`apply_share_link`、`get_style_prompt`，外加一个已弃用但保留的 `apply_design_dna`（兼容旧编码）。手写 JSON-RPC，没有第三方依赖。
 
 ### 三、Agent Skill（Claude Code / WorkBuddy / Codex）
 
@@ -286,7 +307,7 @@ ppt-aesthetic-forge/
 └── LICENSE
 ```
 
-**关于「单一数据源」**：`tools/forge-core.mjs` 不会复制任何方案数据。它用一套最小 DOM 桩把 HTML 里的内联脚本跑起来，直接调用其中的 `OPTS`、`dnaCode()`、`promptText()`。所以改了 HTML，CLI 和 MCP 自动跟着变，不存在两边数据漂移的问题——`tools/selftest.mjs` 就是用来在 CI 里守住这条的。
+**关于「单一数据源」**：`tools/forge-core.mjs` 不会复制任何方案数据。它用一套最小 DOM 桩把 HTML 里的内联脚本跑起来，直接调用其中的 `OPTS`、`shareUrl()`、`promptText()`。所以改了 HTML，CLI 和 MCP 自动跟着变，不存在两边数据漂移的问题——`tools/selftest.mjs` 就是用来在 CI 里守住这条的。
 
 ---
 
@@ -347,7 +368,7 @@ Instead of describing "make it look premium" to an AI, you pick from 10 deduplic
 
 - 10 curated designs, 7 categories, with documented sources and use cases
 - 5 fine-tuning dimensions, hover-to-preview
-- Export: aesthetic DNA string, prompt text, CSS variables, standalone HTML deck
+- Export: shareable URL, prompt text, CSS variables, standalone HTML deck
 - Undo/redo, compare mode, focus mode, full keyboard control
 - No install, no build, no network calls — just open the HTML file
 

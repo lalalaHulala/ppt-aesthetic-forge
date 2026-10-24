@@ -58,12 +58,28 @@ const TOOLS = [
     },
   },
   {
-    name: 'apply_design_dna',
+    name: 'apply_share_link',
     description:
-      '用一串 DNA 编码还原设计规格。DNA 形如 AF:keynote:inkblue:sans:photo:clean:airy:jeii，可跨设备、跨对话传递，粘一次就还原同一套审美。当用户给了你一段 AF: 开头的编码时调用。',
+      '用一条分享链接还原设计规格。链接形如 ?g=keynote&a=80，可读、可手改、可跨设备传递，打开就是同一套审美。当用户给了你一条指向 ppt-aesthetic-forge 的链接、或一段 ?g= 开头的查询串时调用。',
     inputSchema: {
       type: 'object',
-      properties: { dna: { type: 'string', description: '形如 AF:xxx:xxx:xxx:xxx:xxx:xxx:xxxx 的编码' } },
+      properties: {
+        url: {
+          type: 'string',
+          description: '完整链接或裸查询串，如 https://lalalahulala.github.io/ppt-aesthetic-forge/?g=editorial&a=80',
+        },
+      },
+      required: ['url'],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: 'apply_design_dna',
+    description:
+      '【已弃用，改用 apply_share_link】用旧版 DNA 编码还原设计规格。仍可用，但不再推荐——DNA 是一层自造编码，长度不占优、人和模型都读不懂。',
+    inputSchema: {
+      type: 'object',
+      properties: { dna: { type: 'string', description: '形如 AF:xxx:xxx:xxx:xxx:xxx:xxx:xxxx 的旧版编码' } },
       required: ['dna'],
       additionalProperties: false,
     },
@@ -100,6 +116,11 @@ function callTool(name, args) {
     case 'get_design_spec': {
       if (!args?.design) throw new Error('缺少 design 参数');
       const spec = specFor(args);
+      return text(`${briefMarkdown(spec)}\n\n---\n\n完整 JSON：\n\`\`\`json\n${JSON.stringify(spec, null, 2)}\n\`\`\``);
+    }
+    case 'apply_share_link': {
+      if (!args?.url) throw new Error('缺少 url 参数');
+      const spec = specFor({ url: args.url });
       return text(`${briefMarkdown(spec)}\n\n---\n\n完整 JSON：\n\`\`\`json\n${JSON.stringify(spec, null, 2)}\n\`\`\``);
     }
     case 'apply_design_dna': {

@@ -63,7 +63,7 @@ const presets = {
   },
   usage:
     '给 AI：读 ai/spec.md 挑一套方案，把 tokens.cssVars 粘进 ai/starter.html 的 :root，再填文案。' +
-    '给程序：直接用 designs[].tokens 与 designs[].dna。' +
+    '给程序：直接用 designs[].tokens 与 designs[].url。' +
     '不要解析 ppt-aesthetic-forge.html，那是给人用的界面。',
   stages: { canvas: '960x540', pages: ['cover', 'content', 'chart'], rule: '正文对比度 ≥ 4.5:1，全篇 ≤ 2 款字体' },
   fonts: TYPE_ALIAS,
@@ -77,7 +77,8 @@ const presets = {
     name: d.name,
     en: d.en,
     category: d.cat,
-    dna: spec.dna,
+    url: spec.url,
+    dna: spec.dna,   // 旧版编码，仅为兼容保留；新代码请用 url
     template: d.tpl,
     mood: d.mood,
     summary: d.desc,
@@ -157,7 +158,7 @@ rows.forEach(({ design: d, spec }, idx) => {
     `--ppt-title-size:${m.titleSizePx}px; --ppt-body-size:${m.bodySizePx}px;`,
     '```',
     '',
-    `字体 ${fontLine(spec)} · 对比度 正文 ${spec.contrast.body}:1 / 辅助 ${spec.contrast.sub}:1 · DNA \`${spec.dna}\``,
+    `字体 ${fontLine(spec)} · 对比度 正文 ${spec.contrast.body}:1 / 辅助 ${spec.contrast.sub}:1 · 链接 \`${spec.url}\``,
     '',
   );
 });
@@ -197,6 +198,25 @@ const llms = [
   '',
   '**不要读 `ppt-aesthetic-forge.html`**：118KB 的交互界面，是给人点着用的，不是给模型读的规格。',
   '它的数据全部在上面三个文件里，体积小 95%。',
+  '',
+  '## 最省的一条路：只回一条链接',
+  '',
+  '如果用户只是想看看某个风格长什么样、或者要拿去做对比，**不要生成任何代码，直接给一条 URL**：',
+  '',
+  '```',
+  PAGES + '?g=editorial',
+  '```',
+  '',
+  '打开就是那套方案的实时画面。参数含义：',
+  '',
+  '- `g` 设计方案 id（上面 10 个之一），**只有这个必填**',
+  '- `c` 配色 / `t` 字体 / `f` 图形 / `x` 质感 / `d` 密度：省略即用该方案的默认值',
+  '- `a` `r` `w` `s`：强调强度 / 圆角 / 留白 / 字号比例，0–100',
+  '- `embed=1` 只留画面（可直接 iframe 嵌进文档、Notion、飞书）',
+  '',
+  '例子：`' + PAGES + '?g=guochao&a=80&embed=1`',
+  '',
+  '这条路**不消耗你的 token**，也不用你渲染。只有当用户要成品文件时，才去读 spec.md。',
   '',
   '## 没说使用场合时怎么选',
   '',

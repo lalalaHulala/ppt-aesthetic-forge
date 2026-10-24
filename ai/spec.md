@@ -1,6 +1,6 @@
 # PPT 审美规格 · 10 套设计方案
 
-> 由审美捏脸台 v1.2.0 自动生成，与 HTML 同源。最后更新 2026-10-24。
+> 由审美捏脸台 v1.3.0 自动生成，与 HTML 同源。最后更新 2026-10-24。
 
 这份文件是给模型读的：**选一套，把「令牌」整组搬进页面，再填文案**。不需要看别的。
 需要可直接运行的骨架，用同目录的 `starter.html`（960×540，零依赖）。
@@ -47,7 +47,7 @@
 --ppt-title-size:47.8px; --ppt-body-size:21.8px;
 ```
 
-字体 sans（标题 800 / 字距 0em） · 对比度 正文 18.88:1 / 辅助 5.33:1 · DNA `AF:minimal:mono:sans:line:clean:airy:jeii`
+字体 sans（标题 800 / 字距 0em） · 对比度 正文 18.88:1 / 辅助 5.33:1 · 链接 `https://lalalahulala.github.io/ppt-aesthetic-forge/?g=minimal`
 
 ## 02 主题演讲 · `keynote`
 
@@ -69,7 +69,7 @@
 --ppt-title-size:47.8px; --ppt-body-size:21.8px;
 ```
 
-字体 sans（标题 800 / 字距 0em） · 对比度 正文 13.25:1 / 辅助 5.06:1 · DNA `AF:keynote:inkblue:sans:photo:clean:airy:jeii`
+字体 sans（标题 800 / 字距 0em） · 对比度 正文 13.25:1 / 辅助 5.06:1 · 链接 `https://lalalahulala.github.io/ppt-aesthetic-forge/?g=keynote`
 
 ## 03 咨询报告 · `consulting`
 
@@ -91,7 +91,7 @@
 --ppt-title-size:31.2px; --ppt-body-size:15.6px;
 ```
 
-字体 sans（标题 800 / 字距 0em） · 对比度 正文 13.25:1 / 辅助 5.06:1 · DNA `AF:consulting:inkblue:sans:datagrid:clean:dense:jeii`
+字体 sans（标题 800 / 字距 0em） · 对比度 正文 13.25:1 / 辅助 5.06:1 · 链接 `https://lalalahulala.github.io/ppt-aesthetic-forge/?g=consulting`
 
 ## 04 杂志编辑 · `editorial`
 
@@ -113,7 +113,7 @@
 --ppt-title-size:39.5px; --ppt-body-size:18.7px;
 ```
 
-字体 serif（标题 700 / 字距 0.01em） · 对比度 正文 13.55:1 / 辅助 5.02:1 · DNA `AF:editorial:earth:serif:photo:ink:standard:jeii`
+字体 serif（标题 700 / 字距 0.01em） · 对比度 正文 13.55:1 / 辅助 5.02:1 · 链接 `https://lalalahulala.github.io/ppt-aesthetic-forge/?g=editorial`
 
 ## 05 暗色科技 · `darktech`
 
@@ -135,7 +135,7 @@
 --ppt-title-size:39.5px; --ppt-body-size:18.7px;
 ```
 
-字体 mono（标题 700 / 字距 -0.01em） · 对比度 正文 15.65:1 / 辅助 6.95:1 · DNA `AF:darktech:deepnavy:mono:glow:grid:standard:jeii`
+字体 mono（标题 700 / 字距 -0.01em） · 对比度 正文 15.65:1 / 辅助 6.95:1 · 链接 `https://lalalahulala.github.io/ppt-aesthetic-forge/?g=darktech`
 
 ## 06 新中式 · `guochao`
 
@@ -157,7 +157,7 @@
 --ppt-title-size:47.8px; --ppt-body-size:21.8px;
 ```
 
-字体 kai（标题 600 / 字距 0.03em） · 对比度 正文 15.57:1 / 辅助 4.56:1 · DNA `AF:guochao:inkwash:kai:hand:ink:airy:jeii`
+字体 kai（标题 600 / 字距 0.03em） · 对比度 正文 15.57:1 / 辅助 4.56:1 · 链接 `https://lalalahulala.github.io/ppt-aesthetic-forge/?g=guochao`
 
 ## 07 学术答辩 · `academic`
 
@@ -179,7 +179,7 @@
 --ppt-title-size:39.5px; --ppt-body-size:18.7px;
 ```
 
-字体 serif（标题 700 / 字距 0.01em） · 对比度 正文 13.25:1 / 辅助 5.06:1 · DNA `AF:academic:inkblue:serif:line:clean:standard:jeii`
+字体 serif（标题 700 / 字距 0.01em） · 对比度 正文 13.25:1 / 辅助 5.06:1 · 链接 `https://lalalahulala.github.io/ppt-aesthetic-forge/?g=academic`
 
 ## 08 政府汇报 · `gov`
 
@@ -201,7 +201,7 @@
 --ppt-title-size:39.5px; --ppt-body-size:18.7px;
 ```
 
-字体 serif（标题 700 / 字距 0.01em） · 对比度 正文 15.05:1 / 辅助 4.83:1 · DNA `AF:gov:redgold:serif:block:clean:standard:jeii`
+字体 serif（标题 700 / 字距 0.01em） · 对比度 正文 15.05:1 / 辅助 4.83:1 · 链接 `https://lalalahulala.github.io/ppt-aesthetic-forge/?g=gov`
 
 ## 09 文艺手绘 · `hand`
 
@@ -223,7 +223,7 @@
 --ppt-title-size:47.8px; --ppt-body-size:21.8px;
 ```
 
-字体 round（标题 700 / 字距 0.01em） · 对比度 正文 13.55:1 / 辅助 5.02:1 · DNA `AF:hand:earth:round:hand:ink:airy:jeii`
+字体 round（标题 700 / 字距 0.01em） · 对比度 正文 13.55:1 / 辅助 5.02:1 · 链接 `https://lalalahulala.github.io/ppt-aesthetic-forge/?g=hand`
 
 ## 10 活泼波普 · `pop`
 
@@ -245,7 +245,7 @@
 --ppt-title-size:39.5px; --ppt-body-size:18.7px;
 ```
 
-字体 round（标题 700 / 字距 0.01em） · 对比度 正文 12.24:1 / 辅助 5.09:1 · DNA `AF:pop:candy:round:block:clean:standard:jeii`
+字体 round（标题 700 / 字距 0.01em） · 对比度 正文 12.24:1 / 辅助 5.09:1 · 链接 `https://lalalahulala.github.io/ppt-aesthetic-forge/?g=pop`
 
 ---
 

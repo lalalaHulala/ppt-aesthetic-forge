@@ -18,8 +18,11 @@
 
   直达链接（给用户一条就能看到具体方案，不消耗你的 token）：
     ?g=<方案id>      例：?g=editorial
-    ?dna=<DNA编码>   例：?dna=AF:editorial:earth:serif:photo:ink:standard:jeii
+    &c=&t=&f=&x=&d=  可选：配色 / 字体 / 图形 / 质感 / 密度（省略即用该方案默认值）
+    &a=&r=&w=&s=     可选：强调强度 / 圆角 / 留白 / 字号比例（0-100）
     &embed=1         只留画面，无界面
+    &page=2          直接翻到第 2 页（1 封面 / 2 内页 / 3 图表）
+    ?dna=AF:...      旧版编码，仍可解析，但不再产出
   =====================================================================
 -->
 <meta charset="UTF-8">
@@ -214,8 +217,11 @@ code,.mono{font-family:"JetBrains Mono","Cascadia Code",Consolas,"Courier New",m
 .rec-row code{flex:1;font-size:10.5px;color:var(--acc2);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
 
 /* 输出 pane */
-.dna-code{font-size:12px;color:var(--acc2);background:#0D1220;border:1px dashed var(--line2);
-  border-radius:8px;padding:9px 12px;word-break:break-all;line-height:1.6;flex:none}
+.dna-code{font-size:11.5px;color:var(--acc2);background:#0D1220;border:1px dashed var(--line2);
+  border-radius:8px;padding:9px 12px;white-space:nowrap;overflow-x:auto;
+  line-height:1.6;flex:none;scrollbar-width:thin}
+.dna-code::-webkit-scrollbar{height:4px}
+.dna-code::-webkit-scrollbar-thumb{background:var(--line2);border-radius:2px}
 .dna-row{display:flex;gap:7px}
 .dna-row input{flex:1;min-width:0;background:#0D1220;border:1px solid var(--line2);border-radius:7px;
   padding:7px 9px;color:var(--acc2);font-size:11.5px;outline:none}
@@ -635,7 +641,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
     <button class="tbtn" id="btnFocus" title="专注预览 (F)">⤢ 专注</button>
     <button class="tbtn" id="btnRandom">🎲 随机捏脸</button>
     <button class="tbtn" id="btnReset">↺ 重置</button>
-    <button class="tbtn primary" id="btnExport">⧉ 导出 DNA</button>
+    <button class="tbtn primary" id="btnExport" title="打开即是这套审美，含你调过的所有参数">⧉ 复制链接</button>
     <div class="dropdown" id="dropdown"></div>
   </nav>
 
@@ -658,10 +664,14 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
       </div>
 
       <div class="tabpane hidden" id="paneOut">
-        <div class="lp-head">审美 DNA 编码</div>
-        <div class="dna-code mono" id="dnaCode"></div>
+        <div class="lp-head">分享链接 · 打开即是这套审美</div>
+        <div class="dna-code mono" id="shareCode"></div>
+        <div class="btn-row" style="margin-top:8px">
+          <button class="tbtn primary" id="btnCopyShare" style="flex:1">⧉ 复制链接</button>
+          <button class="tbtn" id="btnCopyEmbed" title="只留画面，可直接 iframe 嵌到文档 / Notion / 飞书">嵌入码</button>
+        </div>
         <div class="dna-row" style="margin-top:8px">
-          <input id="dnaInput" class="mono" placeholder="粘贴 DNA 导入，如 AF:minimal:inkblue:...">
+          <input id="dnaInput" class="mono" placeholder="粘贴分享链接（或旧版 DNA）…">
           <button class="mini-btn" id="btnImport">导入</button>
         </div>
         <div class="lp-head" style="margin-top:12px">色板 · 点击复制色值</div>
@@ -672,11 +682,10 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
           <button class="tbtn primary" id="btnHandoff" style="flex:1" title="复制一段含规格链接的指令，粘给任意 AI">↗ 复制「交给 AI」指令</button>
         </div>
         <div class="btn-row" style="margin-top:8px">
-          <button class="tbtn" id="btnCopyDna">⧉ 复制 DNA</button>
           <button class="tbtn" id="btnCopyPrompt">⧉ 复制提示词</button>
+          <button class="tbtn" id="btnCopyCss">⧉ 复制 CSS 变量</button>
         </div>
         <div class="btn-row" style="margin-top:7px">
-          <button class="tbtn" id="btnCopyCss">⧉ 复制 CSS 变量</button>
           <button class="tbtn" id="btnExportHtml">⤓ 导出幻灯片</button>
         </div>
         <div class="lp-head" style="margin-top:10px">推荐生成技能</div>
@@ -753,7 +762,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
         <div class="thumbs" id="thumbs"></div>
         <div class="fs-right">
           <span id="fsDna" class="mono"></span>
-          <span>本地文件 · 无网络请求 · DNA 可分享导入</span>
+          <span>本地文件 · 无网络请求 · 链接可直接分享还原</span>
         </div>
       </footer>
     </section>
@@ -779,17 +788,17 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 <div class="modal-mask" id="helpMask">
   <div class="modal">
     <h3>审美捏脸台 · 使用说明</h3>
-    <div class="msub">游戏开局式 PPT 审美选择器 · 纯本地单文件 · v1.1.0</div>
+    <div class="msub">游戏开局式 PPT 审美选择器 · 纯本地单文件 · v1.3.0</div>
     <div class="modal-sec">三步用法</div>
     <div class="modal-flow">
       <div><b>① 捏脸</b> — 左侧固定显示配置步骤，下方列出该维度的全部选项；鼠标悬停任意选项即时预演效果。选中设计方案即整套套用。</div>
       <div><b>② 检查</b> — 中间视口实时渲染封面 / 内页 / 图表页；右栏显示当前设计方案的好处、适用场景与来源；按 B 可前后对比。</div>
-      <div><b>③ 输出</b> — 「输出」页拿 DNA 编码分享，或复制提示词 / CSS 变量喂给 PPT 生成技能，也可导出可演示的 HTML 幻灯片。</div>
+      <div><b>③ 输出</b> — 「输出」页复制一条分享链接（打开即是这套审美），或复制「交给 AI」指令 / 提示词 / CSS 变量喂给生成工具，也可导出可演示的 HTML 幻灯片。</div>
     </div>
     <div class="modal-sec">键盘快捷键</div>
     <div class="kbd-grid" id="kbdGrid"></div>
     <div class="modal-sec">关于</div>
-    <div class="modal-flow">设计方案目录系统梳理自互联网：ppt-master 三轴风格体系、Gixo 34 套主题、MBB（McKinsey/BCG）咨询设计规范、tyaward 15 种简报风格，并按相似度去重——同一视觉家族只保留一个代表，每套附「好处」与「适用场景」。设计令牌与 WCAG 对比度参考 Google DESIGN.md。无网络请求，DNA 编码可分享导入；菜单栏「我的预设」可把当前审美存到本地，随时一键载入。</div>
+    <div class="modal-flow">设计方案目录系统梳理自互联网：ppt-master 三轴风格体系、Gixo 34 套主题、MBB（McKinsey/BCG）咨询设计规范、tyaward 15 种简报风格，并按相似度去重——同一视觉家族只保留一个代表，每套附「好处」与「适用场景」。设计令牌与 WCAG 对比度参考 Google DESIGN.md。无网络请求，分享链接可直接还原整套审美；菜单栏「我的预设」可把当前审美存到本地，随时一键载入。</div>
   </div>
 </div>
 <div id="toast"></div>
@@ -1270,6 +1279,86 @@ function harmony(){
 function gradeOf(v){ return v>=93?'S':v>=84?'A':v>=72?'B':v>=58?'C':'D'; }
 function hash4(str){ let h=0; for(let i=0;i<str.length;i++) h=(h*31+str.charCodeAt(i))>>>0; return h.toString(36).toUpperCase().slice(-4).padStart(4,'0'); }
 function b36(v){ return Math.round(v/100*35).toString(36); }
+
+/* ---------- 分享链接 ----------
+   只写「跟方案默认值不一样」的维度，其余一律省略。
+   普通人选中一套方案直接复制 → `?g=editorial`，12 个字符；
+   全维度展开也只有 70 出头，始终比旧的 DNA 串短，而且任何人都能读懂、能手改。
+   新增维度只要往后加参数即可，不会让已发出去的旧链接失效。 */
+const DIM_ABBR = {palette:'c', type:'t', graphics:'f', texture:'x', density:'d'};
+const SLIDER_ABBR = {accent:'a', radius:'r', ws:'w', scale:'s'};
+const SLIDER_DEFAULT = {accent:55, radius:40, ws:50, scale:50};
+
+function shareUrl(opt){
+  const d = O('genre'), qs = ['g='+S.genre];
+  for(const k in DIM_ABBR){ if(S[k]!==d.s[k]) qs.push(DIM_ABBR[k]+'='+S[k]); }
+  for(const k in SLIDER_ABBR){ if(S[k]!==SLIDER_DEFAULT[k]) qs.push(SLIDER_ABBR[k]+'='+S[k]); }
+  if(opt && opt.embed) qs.push('embed=1');
+  return BASE_URL + '?' + qs.join('&');
+}
+function embedCode(){
+  return '<iframe src="'+shareUrl({embed:true})+'" width="960" height="540"'
+    + ' style="border:0;border-radius:8px;max-width:100%" allowfullscreen loading="lazy"></iframe>';
+}
+
+/* 解析：分享链接 / 裸查询串 / 旧版 DNA 三种都认，统一成状态对象。
+   旧版 DNA 只做兼容，不再产出——它是一层多余的自造编码：
+   ?dna=AF:... 是 53 字符，而 ?g=editorial 只有 12 字符，
+   且 DNA 对 AI 是密文、对人是天书、加维度还会让旧链接全废。 */
+function parseShare(input){
+  const raw = String(input||'').trim();
+  if(!raw) return null;
+
+  if(/^AF:/i.test(raw)){                                   // 旧版 DNA（已弃用，仅兼容）
+    const p = raw.split(':');
+    if(p.length!==8) return null;
+    const keys = ['genre','palette','type','graphics','texture','density'];
+    if(!keys.every((k,i)=> OPTS[k].some(o=>o.id===p[i+1]))) return null;
+    const n = p[7].split('').map(c=>parseInt(c,36));
+    if(n.some(x=>Number.isNaN(x))) return null;
+    const out = {};
+    keys.forEach((k,i)=>{ out[k]=p[i+1]; });
+    ['accent','radius','ws','scale'].forEach((k,i)=>{ out[k]=Math.round(n[i]/35*100); });
+    return out;
+  }
+
+  const at = raw.indexOf('?');
+  const qs = at>=0 ? raw.slice(at+1) : raw.replace(/^#/,'');
+  const q = new URLSearchParams(qs);
+  const out = {};
+  let hit = false;
+
+  const g = q.get('g')||q.get('design')||q.get('genre');
+  if(g){
+    if(!OPTS.genre.some(o=>o.id===g)) return null;
+    out.genre = g; hit = true;
+  }
+  const dim = (abbr, name)=>{
+    const v = q.get(name)||q.get(abbr);
+    if(v && OPTS[name].some(o=>o.id===v)){ out[name]=v; hit=true; }
+  };
+  dim('c','palette'); dim('t','type'); dim('f','graphics'); dim('x','texture'); dim('d','density');
+
+  for(const k of ['accent','radius','ws','scale']){
+    const v = q.get(k) || q.get(SLIDER_ABBR[k]);
+    if(v!==null && v!=='' && !Number.isNaN(+v)){
+      out[k] = Math.max(0, Math.min(100, Math.round(+v))); hit = true;
+    }
+  }
+  return hit ? out : null;
+}
+
+/* 应用解析结果。滑杆先归默认值，保证「同一条链接在任何机器上还原成同一套」 */
+function applyShare(v){
+  if(!v) return false;
+  const g = v.genre ? OPTS.genre.find(o=>o.id===v.genre) : null;
+  if(g) applyTheme(g.s, g.id);
+  for(const k in DIM_ABBR){ if(v[k]) S[k] = v[k]; }
+  for(const k in SLIDER_ABBR){ S[k] = typeof v[k]==='number' ? v[k] : SLIDER_DEFAULT[k]; }
+  return true;
+}
+
+/* 旧版序列化，仅用于「我的预设」里已存的老记录，新代码不要再调用 */
 function dnaCode(){
   return 'AF:'+['genre','palette','type','graphics','texture','density'].map(d=>S[d]).join(':')
     +':'+[S.accent,S.radius,S.ws,S.scale].map(b36).join('');
@@ -1277,7 +1366,7 @@ function dnaCode(){
 function promptText(){
   const p=O('palette').c, t=O('type').f, m=getMetrics();
   const cb = contrast(p.text,p.bg).toFixed(1);
-  return `【PPT 审美DNA】${dnaCode()}
+  return `【设计方案】${O('genre').name}（id: ${S.genre}）
 【设计令牌 DESIGN TOKENS】
 colors.bg=${p.bg} · surface=${p.surface} · text=${p.text} · primary=${p.primary} · accent=${p.accent}
 colors.chart=${p.chart.join(',')}
@@ -1300,7 +1389,7 @@ contrast.body=${cb}:1（WCAG AA 达标线 4.5:1）
    这个是指令，给了它要读的文件、要用的骨架、以及一条不用读代码就能看的预览链接。 */
 const BASE_URL = 'https://lalalahulala.github.io/ppt-aesthetic-forge/';
 function handoffText(){
-  const d = O('genre'), dna = dnaCode();
+  const d = O('genre');
   return `帮我做一份 PPT，审美已经定好了，按这个执行。
 
 【读规格】${BASE_URL}ai/spec.md
@@ -1308,8 +1397,7 @@ function handoffText(){
 【用骨架】${BASE_URL}ai/starter.html
 　　960×540 单文件，零依赖。改令牌和文案就是成品。
 【我的选择】${d.name}（${d.en}）— ${d.desc}
-【DNA】${dna}
-【实时画面】${BASE_URL}?dna=${dna}&embed=1
+【实时画面】${shareUrl({embed:true})}
 
 执行要求：
 1. 把 spec 里「${d.name}」那组 --ppt-* 整段替换进 starter.html 的 :root，不要只改一两个值。
@@ -1329,22 +1417,8 @@ function applyUrlState(){
 
   if(/^(1|true|yes)$/i.test(q.get('embed')||q.get('bare')||'')) document.querySelector('.app').classList.add('embed');
 
-  const dna = q.get('dna');
-  if(dna){
-    const parts = dna.trim().split(':');
-    if(parts.length===8 && parts[0]==='AF'){
-      const keys = ['genre','palette','type','graphics','texture','density'];
-      const good = keys.every((k,i)=> OPTS[k].some(o=>o.id===parts[i+1]));
-      const nums = parts[7].split('').map(c=>parseInt(c,36));
-      if(good && !nums.some(n=>Number.isNaN(n))){
-        keys.forEach((k,i)=>{ S[k]=parts[i+1]; });
-        ['accent','radius','ws','scale'].forEach((k,i)=>{ S[k]=Math.round(nums[i]/35*100); });
-      }
-    }
-  }else{
-    const g = q.get('g')||q.get('design')||q.get('genre');
-    if(g){ const d = OPTS.genre.find(x=>x.id===g); if(d) applyTheme(d.s, d.id); }
-  }
+  // 主路径是可读参数；?dna= 走兼容分支，已发出去的旧链接照样能开
+  applyShare(parseShare(q.get('dna') || raw));
 
   const p = (q.get('page')||q.get('p')||'').toLowerCase();
   const pm = {cover:0,content:1,chart:2,[1]:0,[2]:1,[3]:2};
@@ -1465,11 +1539,12 @@ function renderInspector(){
   $('idChips').innerHTML = DIM_IDS.map(d=>`<span class="chip-mini">${DIMS.find(x=>x.id===d).name} <b>${O(d).name}</b></span>`).join('');
 }
 function renderOutput(){
-  const dna = dnaCode();
-  $('dnaCode').textContent = dna;
+  const url = shareUrl();
+  $('shareCode').textContent = url;
+  $('shareCode').title = url;
   $('promptBox').textContent = promptText();
-  $('tbDna').textContent = '#' + hash4(dna);
-  $('fsDna').textContent = dna;
+  $('tbDna').textContent = S.genre;
+  $('fsDna').textContent = url.slice(url.indexOf('?'));
   renderSwatches();
   // 推荐生成技能：装备的技能预设 → 对应 skill；原生流派 → 三选一
   const g = O('genre');
@@ -1540,7 +1615,8 @@ function fitAll(){ fitStage(); fitCompare(); }
 
 /* ================= 菜单 ================= */
 const MENUS = {
- file:[{t:'导入 DNA…',fn:()=>{switchTab('out'); $('dnaInput').focus();}},{t:'导出 DNA',fn:()=>copy(dnaCode(),'审美 DNA 已复制')},
+ file:[{t:'导入分享链接…',fn:()=>{switchTab('out'); $('dnaInput').focus();}},{t:'复制分享链接',fn:()=>copy(shareUrl(),'分享链接已复制')},
+   {t:'复制嵌入码',fn:()=>copy(embedCode(),'iframe 嵌入码已复制')},
    {t:'复制提示词',fn:()=>copy(promptText(),'提示词已复制，可直接喂给 PPT Skill')},
    {t:'复制 CSS 变量',fn:()=>copy(cssVarsText(),'CSS 变量已复制')},
    {t:'导出 HTML 幻灯片…',fn:exportDeck},{sep:1},{t:'重置',fn:resetAll}],
@@ -1585,10 +1661,10 @@ function esc2(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;
 function savePresetPrompt(){
   const nm = prompt('为当前审美配置命名：', '我的预设 '+(loadPresets().length+1));
   if(!nm) return;
-  const arr = loadPresets(); arr.push({name:nm, dna:dnaCode()}); savePresets(arr);
+  const arr = loadPresets(); arr.push({name:nm, url:shareUrl()}); savePresets(arr);
   toast('已保存预设「'+nm+'」');
 }
-function loadPreset(i){ const arr=loadPresets(); if(arr[i]) importCode(arr[i].dna); }
+function loadPreset(i){ const arr=loadPresets(); if(arr[i]) importCode(arr[i].url||arr[i].dna); }
 function deletePreset(i){ const arr=loadPresets(); arr.splice(i,1); savePresets(arr); toast('已删除该预设'); }
 function clearPresets(){ if(!confirm('确定清空全部预设？')) return; savePresets([]); toast('已清空全部预设'); }
 function openPresetsMenu(anchor){
@@ -1600,7 +1676,7 @@ function openPresetsMenu(anchor){
   let html = `<div class="dd-item" data-act="save">★ 保存当前配置为预设…</div>`;
   if(saved.length){
     html += '<div class="dd-sep"></div>';
-    html += saved.map((p,i)=>`<div class="dd-pre"><span class="pnm" title="${esc2(p.dna)}">${esc2(p.name)}</span><span class="pact"><span class="pload" data-i="${i}">载入</span> <span class="pdel" data-i="${i}">✕</span></span></div>`).join('');
+    html += saved.map((p,i)=>`<div class="dd-pre"><span class="pnm" title="${esc2(p.url||p.dna||'')}">${esc2(p.name)}</span><span class="pact"><span class="pload" data-i="${i}">载入</span> <span class="pdel" data-i="${i}">✕</span></span></div>`).join('');
     html += '<div class="dd-sep"></div><div class="dd-item" data-act="clear">清空全部预设</div>';
   } else {
     html += '<div class="dd-sep"></div><div class="dd-item" style="color:var(--sub2);cursor:default">暂无预设 · 先保存一个吧</div>';
@@ -1707,7 +1783,7 @@ function toggleFocus(){
 /* ---- CSS 变量 / 色板 / 导出 ---- */
 function cssVarsText(){
   const p=O('palette').c, t=O('type').f, m=getMetrics();
-  return ':root{\n  /* 审美捏脸台 · '+dnaCode()+' */\n'
+  return ':root{\n  /* 审美捏脸台 · '+S.genre+' · '+O('genre').name+' */\n'
     +'  --ppt-bg:'+p.bg+'; --ppt-surface:'+p.surface+'; --ppt-text:'+p.text+'; --ppt-sub:'+p.sub+';\n'
     +'  --ppt-primary:'+p.primary+'; --ppt-accent:'+p.accent+';\n'
     +'  --ppt-chart-1:'+p.chart[0]+'; --ppt-chart-2:'+p.chart[1]+'; --ppt-chart-3:'+p.chart[2]+'; --ppt-chart-4:'+p.chart[3]+';\n'
@@ -1723,7 +1799,7 @@ function renderSwatches(){
   $('swatches').querySelectorAll('[data-hex]').forEach(b=>{ b.onclick = ()=>copy(b.dataset.hex,'已复制 '+b.dataset.hex); });
 }
 function exportDeck(){
-  const dna = dnaCode(), hv = harmony(), gr = gradeOf(hv);
+  const url = shareUrl(), hv = harmony(), gr = gradeOf(hv);
   const css = document.querySelector('style').textContent;
   const deckCss = '\nbody{overflow:hidden;background:#0E1118}\n'
     +'.deck-stage{position:fixed;inset:0;display:grid;place-items:center}\n'
@@ -1752,16 +1828,16 @@ function exportDeck(){
   const html = '<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n<meta charset="UTF-8">\n'
     +'<meta name="viewport" content="width=device-width,initial-scale=1.0">\n<title>'+O('genre').name+' · 审美演示</title>\n<style>'
     +css+deckCss+'</style>\n</head>\n<body>\n'
-    +'<div class="deck-hud"><span>审美捏脸台导出演示</span><span class="mono">'+dna+'</span>'
+    +'<div class="deck-hud"><span>审美捏脸台导出演示</span><span class="mono">'+O('genre').name+' · '+S.genre+'</span>'
     +'<span>协调度 '+hv+' <span class="g">'+gr+'</span></span><span id="pgLabel"></span>'
     +'<span class="deck-dots" id="dots"></span></div>\n'
     +'<div class="deck-stage"><div class="slide-scale" id="slideScale">'+c.outerHTML+'</div></div>\n'
-    +'<div class="deck-hint">← → 翻页 · 点击画面下一张 · 由审美 DNA '+dna+' 驱动</div>\n'
+    +'<div class="deck-hint">← → 翻页 · 点击画面下一张 · 版式来源 '+url+'</div>\n'
     +'<script>'+deckJs+'</scr'+'ipt>\n</body>\n</html>';
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'aesthetic-forge-'+S.genre+'-'+hash4(dna)+'.html';
+  a.download = 'aesthetic-forge-'+S.genre+'-'+hash4(url)+'.html';
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
   toast('HTML 幻灯片已导出，可直接演示');
@@ -1835,16 +1911,10 @@ function randomize(){
 }
 function importCode(code){
   if(previewBackup) endPreview();
-  const parts = code.trim().split(':');
-  if(parts.length!==8 || parts[0]!=='AF'){ toast('DNA 编码格式不正确'); return; }
-  const dims = ['genre','palette','type','graphics','texture','density'];
-  for(let i=0;i<6;i++){
-    if(!OPTS[dims[i]].some(o=>o.id===parts[i+1])){ toast(`无法识别的取值：${parts[i+1]}`); return; }
-    S[dims[i]] = parts[i+1];
-  }
-  const nums = parts[7].split('').map(c=>parseInt(c,36));
-  ['accent','radius','ws','scale'].forEach((k,i)=>{ S[k]=Math.round(nums[i]/35*100); });
-  commit(); toast('DNA 导入成功');
+  const v = parseShare(code);
+  if(!v){ toast('没认出这条链接，检查是否复制完整'); return; }
+  applyShare(v);
+  commit(); toast('已套用：'+O('genre').name);
 }
 function copy(text,msg){
   const done = ()=>toast(msg||'已复制');
@@ -1866,9 +1936,10 @@ function toast(msg){
 
 $('btnRandom').onclick = randomize;
 $('btnReset').onclick = resetAll;
-$('btnExport').onclick = ()=>copy(dnaCode(),'审美 DNA 已复制，去分享吧');
+$('btnExport').onclick = ()=>copy(shareUrl(),'分享链接已复制，打开即是这套审美');
 $('btnHandoff').onclick = ()=>copy(handoffText(),'已复制「交给 AI」指令，粘到任意对话里就能用');
-$('btnCopyDna').onclick = ()=>copy(dnaCode(),'DNA 编码已复制');
+$('btnCopyShare').onclick = ()=>copy(shareUrl(),'分享链接已复制');
+$('btnCopyEmbed').onclick = ()=>copy(embedCode(),'iframe 嵌入码已复制，贴进文档即可');
 $('btnCopyPrompt').onclick = ()=>copy(promptText(),'提示词已复制，可直接喂给 PPT Skill');
 $('btnCopyCss').onclick = ()=>copy(cssVarsText(),'CSS 变量已复制');
 $('btnExportHtml').onclick = exportDeck;

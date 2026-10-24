@@ -46,7 +46,8 @@ node bin/paf.mjs list                  # 看 10 套方案（含好处与适用�
 node bin/paf.mjs spec --design keynote # 出一份规格（markdown 简报，适合塞进上下文）
 node bin/paf.mjs spec --design keynote --json   # 完整 JSON，适合程序消费
 node bin/paf.mjs spec --design darktech --prompt # 只要提示词，适合贴给 AI PPT 工具
-node bin/paf.mjs dna AF:keynote:inkblue:sans:photo:clean:airy:jeii  # 从编码还原
+node bin/paf.mjs spec --design keynote --url    # 只要分享链接
+node bin/paf.mjs url '?g=guochao&a=80'           # 从链接还原
 ```
 
 如果本仓库不在当前目录，先定位：`find / -name "paf.mjs" -path "*bin*" 2>/dev/null`。
@@ -69,7 +70,7 @@ node bin/paf.mjs dna AF:keynote:inkblue:sans:photo:clean:airy:jeii  # 从编码�
 5. **交付**，三种下游任选：
    - 用户要 AI PPT 工具出图 → 把 `prompt` 字段整段给用户，让他贴进 Kimi PPT / iSlide / Gamma
    - 用户要你写代码 → 用 `tokens.colors` / `tokens.metrics` / `tokens.cssVars` 里的确切数值，不要自己猜
-   - 用户要你复现同一套审美 → 用 `dna` 字段
+   - 用户要你复现同一套审美 → 用 `url` 字段（可读链接，参数能直接改）
 
 ## 输出里的关键字段
 
@@ -82,7 +83,7 @@ node bin/paf.mjs dna AF:keynote:inkblue:sans:photo:clean:airy:jeii  # 从编码�
 | `tokens.metrics` | 圆角、内边距、间距、标题字号、正文字号的**具体像素值** |
 | `tokens.cssVars` | 一段可直接粘进 `<style>` 的 `:root{}` |
 | `contrast` | WCAG 实测值，`pass` 为 false 时必须提示用户 |
-| `dna` | 可跨会话传递的编码 |
+| `url` | 可跨会话传递的分享链接，比编码更短也更可读 |
 
 ## 微调（可选）
 
@@ -99,6 +100,7 @@ node bin/paf.mjs dna AF:keynote:inkblue:sans:photo:clean:airy:jeii  # 从编码�
 ## 注意事项
 
 - **不要自己发明设计风格**。这个 skill 的 10 套是调研 + 去重后的结果，编新的会破坏一致性。
-- **DNA 编码有量化误差**：末尾 4 位走 base36 单字符（36 档），4 个微调滑杆往返误差 ≤ 1.5%。不影响视觉。
+- **分享链接只写非默认参数**：`?g=editorial` 就够；改了滑杆才会出现 `&a=80`。回环还原是精确的，无量化误差。
+- **旧版 DNA 仍可解析**（`AF:` 开头的串），但已弃用——长度不占优、人和模型都读不懂，不要主动产出。
 - 规格里的字体是**字体栈**（含降级），不是单个字体名。生成代码时整串保留。
 - 只做"定风格"，不做"写内容"。用户要大纲和文案，那是另一件事。

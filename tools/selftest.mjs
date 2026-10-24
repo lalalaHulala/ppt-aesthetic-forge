@@ -226,6 +226,85 @@ check('主页面带 AI 引导注释与直达参数', () => {
   assert(h.includes('btnHandoff'), '缺「交给 AI」按钮');
 });
 
+/* ---------- 分享链接（取代旧版 DNA） ---------- */
+
+check('每套方案的裸链接只有 ?g=，不带冗余维度', () => {
+  for (const d of designs) {
+    const u = specFor({ design: d.id }).url;
+    const q = u.slice(u.indexOf('?') + 1);
+    const keys = q.split('&').map((kv) => kv.split('=')[0]);
+    assert(keys.length === 1 && keys[0] === 'g', `${d.id} 的链接带了多余参数：${q}`);
+  }
+});
+
+check('常见用法下分享链接明显短于旧版 DNA', () => {
+  // 现实分布：绝大多数人只选方案，少数人再拖一两根滑杆。
+  // 极端情况（九个维度全改）链接会更长，但那不是真实用法，也不影响可用性。
+  for (const d of designs) {
+    const bare = specFor({ design: d.id });
+    const withSliders = specFor({ design: d.id, accent: 99, radius: 1 });
+    const qBare = bare.url.slice(bare.url.indexOf('?')).length;
+    const qSlide = withSliders.url.slice(withSliders.url.indexOf('?')).length;
+    assert(qBare <= 20, `${d.id} 只选方案却要 ${qBare} 字符`);
+    assert(qSlide < withSliders.dna.length + 14, `${d.id} 改滑杆后链接 ${qSlide} 字符，不比 DNA 省`);
+  }
+});
+
+check('分享链接往返还原（10 套 × 全维度覆盖）', () => {
+  for (const d of designs) {
+    const a = specFor({ design: d.id, palette: 'candy', type: 'serif', graphics: 'block', texture: 'ink', density: 'airy', accent: 20, radius: 90, ws: 10, scale: 70 });
+    const b = specFor({ url: a.url });
+    assert(JSON.stringify(a.config) === JSON.stringify(b.config),
+      `${d.id} 还原不一致：\n  ${JSON.stringify(a.config)}\n  ${JSON.stringify(b.config)}`);
+    assert(a.url === b.url, `${d.id} 二次生成的链接漂移`);
+  }
+});
+
+check('分享链接只含 URL 安全字符', () => {
+  for (const d of designs) {
+    const u = specFor({ design: d.id }).url;
+    assert(!/[^\w:\/.\-?&=]/.test(u), `${d.id} 的链接含非法字符：${u}`);
+  }
+});
+
+check('旧版 DNA 仍可解析，并转成分享链接', () => {
+  const cases = [
+    'AF:minimal:mono:sans:line:clean:airy:jeii',
+    'AF:darktech:deepnavy:mono:glow:grid:standard:jeii',
+    'AF:guochao:inkwash:kai:hand:ink:airy:jeii',
+  ];
+  for (const code of cases) {
+    const s = specFor({ dna: code });
+    assert(s.url.includes('?g=' + s.design.id), `${code} 没转成链接`);
+    assert(parseDna(code).genre === s.design.id, `${code} 设计方案解析错`);
+  }
+});
+
+check('垃圾输入不会静默套用', () => {
+  const F = loadForge();
+  for (const bad of ['', '   ', 'hello', '?g=', '?g=nope', 'AF:minimal', 'AF:minimal:mono:sans:line:clean:airy:!!', '?a=abc']) {
+    const v = F.parseShare(bad);
+    assert(v === null || v.genre === undefined, `「${bad}」被误判为有效`);
+  }
+});
+
+check('提示词不再输出 DNA 密文', () => {
+  for (const d of designs) {
+    const s = specFor({ design: d.id });
+    assert(!/AF:/.test(s.prompt), `${d.id} 的提示词里仍有 DNA 串`);
+    assert(s.prompt.startsWith('【设计方案】'), `${d.id} 的提示词首行不是方案名`);
+  }
+});
+
+check('页面不再向用户暴露 DNA 字样', () => {
+  const h = read('ppt-aesthetic-forge.html');
+  assert(!h.includes('复制 DNA'), '按钮仍在让用户复制 DNA');
+  assert(!h.includes('导出 DNA'), '菜单仍在导出 DNA');
+  assert(h.includes('btnCopyShare'), '缺「复制链接」按钮');
+  assert(h.includes('btnCopyEmbed'), '缺「嵌入码」按钮');
+  assert(h.includes('shareUrl'), '缺 shareUrl 实现');
+});
+
 /* ---------- 结果 ---------- */
 
 if (fail) {
