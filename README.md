@@ -54,6 +54,14 @@ AI 会用工具，就给它一条链接；不会用工具，就给它一段话�
 
 这些文件全部由 `ppt-aesthetic-forge.html` 自动生成（`node tools/gen-ai.mjs`），CI 会校验一致性——改了 HTML 忘了同步，构建直接失败。
 
+**要长期稳定就锁版本**。上面的链接走 `@main`，会跟着仓库变；如果下游拿它做批量生成，把 `@main` 换成 tag，输出才不会某天突然变样：
+
+```text
+https://cdn.jsdelivr.net/gh/lalalaHulala/ppt-aesthetic-forge@v1.2.0/ai/spec.md
+```
+
+GitHub Pages 没有版本路径，锁版本走 jsDelivr。托管和 CDN 都在免费额度内，没有服务器、没有数据库、不消耗任何 API 额度——**调用成本只取决于模型读了多少字**，这也是把 118KB 砍到 13KB 的原因。
+
 ---
 
 ## 这玩意儿解决什么问题

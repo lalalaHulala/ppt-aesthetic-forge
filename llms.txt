@@ -54,3 +54,5 @@
 ## 国内访问
 
 GitHub 直连不稳时，把上面所有 `https://lalalahulala.github.io/ppt-aesthetic-forge/` 换成 `https://cdn.jsdelivr.net/gh/lalalaHulala/ppt-aesthetic-forge@main/`（jsDelivr 镜像，同样路径）。
+
+想锁版本（下游批量生成时避免上游改动导致输出漂移），把 `@main` 换成 tag，例如 `@v1.2.0`。
