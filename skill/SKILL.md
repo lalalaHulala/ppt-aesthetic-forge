@@ -1,6 +1,6 @@
 ---
 name: ppt-aesthetic-forge
-description: 当用户要做 PPT、幻灯片、演示文稿、汇报材料、路演 deck、课件，或抱怨「AI 生成的 PPT 风格每次都不一样」「不知道该怎么描述我想要的风格」「能不能统一一下配色」时使用。提供 10 套经互联网调研去重的设计方案，以及可直接消费的结构化设计令牌（精确色值、字体、字号、间距、WCAG 对比度）。不联网、不装依赖、输出确定。
+description: 当用户要做 PPT、幻灯片、演示文稿、汇报材料、路演 deck、课件，或抱怨「AI 生成的 PPT 风格每次都不一样」「不知道该怎么描述我想要的风格」「能不能统一一下配色」时使用。提供 10 套经互联网调研去重的设计方案，以及可直接消费的结构化设计令牌（精确色值、字体、字号、间距、WCAG 对比度）。不联网、不装依赖、输出确定。 Use when building slide decks, presentations, pitch decks or report pages, or when the user says every AI-generated deck looks different, cannot describe the style they want, or needs consistent colors. Ships 10 de-duplicated design presets with exact design tokens (hex, font stack, type scale, spacing, WCAG contrast) plus a zero-dependency 960x540 HTML starter you can fill in.
 ---
 
 # PPT 审美捏脸台 · Agent Skill

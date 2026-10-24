@@ -25,3 +25,6 @@ node_modules/
 # 本地预览
 .venv/
 __pycache__/
+
+# 内部传播方案，不发布
+/传播方案.md
