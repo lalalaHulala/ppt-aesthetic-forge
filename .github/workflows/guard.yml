@@ -74,7 +74,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: 自检（10 套方案 · DNA 往返 · 覆盖 · 对比度）
+      - name: 自检（10 套方案 · 链接往返 · 覆盖 · 对比度）
         run: node tools/selftest.mjs
 
       - name: AI 入口文件与 HTML 同步
@@ -125,8 +125,11 @@ jobs:
             const init = lines.find(m => m.id === 1);
             const list = lines.find(m => m.id === 2);
             if (!init?.result?.serverInfo?.name) { console.error("initialize 失败"); process.exit(1); }
-            if (list.result.tools.length !== 4) { console.error("工具数应为 4，实际 " + list.result.tools.length); process.exit(1); }
-            console.log("MCP 就绪，工具：" + list.result.tools.map(t => t.name).join(", "));
+            const names = list.result.tools.map(t => t.name);
+            const need = ["list_design_presets", "get_design_spec", "apply_share_link", "get_style_prompt"];
+            for (const n of need) if (!names.includes(n)) { console.error("缺工具 " + n); process.exit(1); }
+            if (names.length !== 5) { console.error("工具数应为 5，实际 " + names.length); process.exit(1); }
+            console.log("MCP 就绪，工具：" + names.join(", "));
           '
 
       - name: 禁止 npm 运行时依赖
