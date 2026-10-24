@@ -14,6 +14,7 @@ memory/
 .wb_*
 .wb-test.js
 .raw-*.png
+.shot-*.png
 
 # 构建与部署产物
 _site/

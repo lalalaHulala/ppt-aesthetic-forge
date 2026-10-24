@@ -6,7 +6,13 @@
  * 这里会立刻失败，CI 会拦住。
  */
 
-import { listDesigns, listDimensions, specFor, parseDna, briefMarkdown } from './forge-core.mjs';
+import { listDesigns, listDimensions, specFor, parseDna, briefMarkdown, loadForge } from './forge-core.mjs';
+import { readFileSync, existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const read = (p) => readFileSync(join(ROOT, p), 'utf8');
 
 let pass = 0;
 let fail = 0;
@@ -151,6 +157,73 @@ check('非法取值会报错', () => {
 check('全部方案正文对比度 ≥ 4.5', () => {
   const bad = Object.values(specs).filter((s) => s.contrast.body < 4.5);
   assert(bad.length === 0, bad.map((s) => `${s.design.id}=${s.contrast.body}`).join(', '));
+});
+
+check('全部色板辅助文字对比度 ≥ 4.5', () => {
+  // 辅助色承载大量正文（副标题、说明、脚注），不达标就是真实的可读性缺陷
+  const F = loadForge();
+  const bad = F.OPTS.palette
+    .map((p) => ({ id: p.id, v: F.contrast(p.c.sub, p.c.bg) }))
+    .filter((x) => x.v < 4.5);
+  assert(bad.length === 0, bad.map((x) => `${x.id}=${x.v.toFixed(2)}`).join(', '));
+});
+
+/* ---------- 给 AI 的入口文件（防止 HTML 改了这三个文件没跟上） ---------- */
+
+check('AI 入口文件齐全', () => {
+  for (const f of ['llms.txt', 'ai/spec.md', 'ai/presets.json', 'ai/prompt.txt', 'ai/starter.html']) {
+    assert(existsSync(join(ROOT, f)), `缺文件：${f}`);
+    assert(read(f).length > 200, `文件过短：${f}`);
+  }
+});
+
+check('spec.md 覆盖全部方案且带令牌', () => {
+  const md = read('ai/spec.md');
+  for (const d of designs) {
+    assert(md.includes(`\`${d.id}\``), `spec.md 漏了 ${d.id}`);
+  }
+  assert((md.match(/--ppt-bg:/g) || []).length === designs.length, '每套方案都该有一组 --ppt-bg');
+  assert(!md.includes('undefined'), 'spec.md 里有 undefined，说明取字段失败');
+});
+
+check('prompt.txt 覆盖全部方案', () => {
+  const t = read('ai/prompt.txt');
+  for (const d of designs) assert(t.includes(`\`${d.id}\``), `prompt.txt 漏了 ${d.id}`);
+});
+
+check('llms.txt 覆盖全部方案并指向规格', () => {
+  const t = read('llms.txt');
+  for (const d of designs) assert(t.includes(`\`${d.id}\``), `llms.txt 漏了 ${d.id}`);
+  assert(t.includes('ai/spec.md'), 'llms.txt 没指向 ai/spec.md');
+  assert(/不要读/i.test(t), 'llms.txt 应明确劝阻读主 HTML');
+});
+
+check('presets.json 结构完整', () => {
+  const p = JSON.parse(read('ai/presets.json'));
+  assert(p.designs.length === designs.length, '方案数不符');
+  assert(p.entry && p.entry.pages && p.entry.spec, '缺 entry 入口字段');
+  for (const d of p.designs) {
+    assert(d.tokens?.cssVars?.includes('--ppt-bg'), `${d.id} 缺 cssVars`);
+    assert(/^AF:/.test(d.dna), `${d.id} 的 DNA 不对`);
+  }
+});
+
+check('starter.html 自带全部设计令牌', () => {
+  const h = read('ai/starter.html');
+  const vars = ['--ppt-bg', '--ppt-surface', '--ppt-text', '--ppt-sub', '--ppt-primary', '--ppt-accent',
+    '--ppt-chart-1', '--ppt-chart-4', '--ppt-font-head', '--ppt-font-body', '--ppt-head-weight',
+    '--ppt-radius', '--ppt-pad', '--ppt-gap', '--ppt-title-size', '--ppt-body-size'];
+  for (const v of vars) assert(h.includes(`${v}:`), `starter.html 缺变量 ${v}`);
+  assert((h.match(/<section class="page/g) || []).length === 3, '应为三页');
+  assert(!/<script[^>]+src=|<link[^>]+href="http/.test(h), 'starter.html 不得引用外部资源');
+});
+
+check('主页面带 AI 引导注释与直达参数', () => {
+  const h = read('ppt-aesthetic-forge.html');
+  assert(h.includes('ai/spec.md'), 'HTML 头部没有指向 ai/spec.md');
+  assert(h.includes('applyUrlState'), '缺 URL 深链逻辑');
+  assert(h.includes("'embed'"), '缺 embed 模式');
+  assert(h.includes('btnHandoff'), '缺「交给 AI」按钮');
 });
 
 /* ---------- 结果 ---------- */

@@ -1,6 +1,27 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+<!--
+  =====================================================================
+  如果你是被用户要求「读取这个页面」的 AI，先看这里，别读全文。
+
+  这是一个 118KB 的交互界面，给人点着用的；它的数据在更小的文件里，
+  体积小 95%，内容等价：
+
+    ai/spec.md        10 套设计方案的完整令牌，约 13KB，一次读完就能复现
+    ai/presets.json   同上的 JSON 版，带 CSS 变量，给脚本用
+    ai/starter.html   可直接运行的 960×540 骨架，改令牌 + 文案即成品
+    llms.txt          总入口，先读这个也行
+
+  在线地址：https://lalalahulala.github.io/ppt-aesthetic-forge/llms.txt
+  国内镜像：https://cdn.jsdelivr.net/gh/lalalaHulala/ppt-aesthetic-forge@main/llms.txt
+
+  直达链接（给用户一条就能看到具体方案，不消耗你的 token）：
+    ?g=<方案id>      例：?g=editorial
+    ?dna=<DNA编码>   例：?dna=AF:editorial:earth:serif:photo:ink:standard:jeii
+    &embed=1         只留画面，无界面
+  =====================================================================
+-->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>审美捏脸台 · Aesthetic Forge</title>
@@ -554,6 +575,14 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 .app.focus .workspace{grid-template-columns:minmax(0,1fr)}
 .app.focus .filmstrip{display:none}
 
+/* 嵌入 / 直达模式（?embed=1）：只留画面，给 iframe 和分享链接用。
+   用绝对定位铺满视口，不受主界面三列网格影响 */
+.app.embed .titlebar,.app.embed .menubar,.app.embed .filmstrip,.app.embed .vp-bar,
+.app.embed .panel.left,.app.embed .panel.right{display:none!important}
+.app.embed .workspace{position:fixed;inset:0;display:block!important}
+.app.embed .viewport{position:absolute;inset:0;display:flex;background:transparent}
+.app.embed .stage-wrap{position:absolute;inset:0}
+
 /* 色板（输出 pane） */
 .sw-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
 .sw-b{border:1px solid var(--line2);border-radius:7px;overflow:hidden;background:var(--panel2);padding:0;display:flex;flex-direction:column}
@@ -639,6 +668,9 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
         <div class="sw-grid" id="swatches"></div>
         <div class="lp-head" style="margin-top:12px">生成提示词 · 喂给 PPT Skill</div>
         <div class="prompt-box mono" id="promptBox"></div>
+        <div class="btn-row" style="margin-top:8px">
+          <button class="tbtn primary" id="btnHandoff" style="flex:1" title="复制一段含规格链接的指令，粘给任意 AI">↗ 复制「交给 AI」指令</button>
+        </div>
         <div class="btn-row" style="margin-top:8px">
           <button class="tbtn" id="btnCopyDna">⧉ 复制 DNA</button>
           <button class="tbtn" id="btnCopyPrompt">⧉ 复制提示词</button>
@@ -853,11 +885,11 @@ palette:[
  {id:'deepnavy', name:'深海军团', desc:'暗底 + 科技蓝', c:{bg:'#0B1526',surface:'#121E33',text:'#E8EEF6',sub:'#8DA2B8',primary:'#4D8DFF',accent:'#00D4FF',chart:['#00D4FF','#4D8DFF','#2E5CBF','#17324D']}, dark:true, attrs:{impact:12,pro:10,warm:2,tech:16,culture:2}},
  {id:'mono',     name:'黑白极简', desc:'黑白灰 + 单色强调', c:{bg:'#FFFFFF',surface:'#FAFAFA',text:'#111111',sub:'#6B6B6B',primary:'#1A1A1A',accent:'#FF5A36',chart:['#1A1A1A','#FF5A36','#9A9A9A','#D9D9D9']}, dark:false, attrs:{impact:9,pro:12,warm:3,tech:6,culture:6}},
  {id:'neon',     name:'霓虹赛博', desc:'暗底 + 紫青霓虹', c:{bg:'#0A0A14',surface:'#141422',text:'#F0F0FF',sub:'#8A8AA8',primary:'#B24BF3',accent:'#00F0FF',chart:['#00F0FF','#B24BF3','#FF3E9A','#3A3A5C']}, dark:true, attrs:{impact:16,pro:5,warm:2,tech:17,culture:2}},
- {id:'earth',    name:'暖大地杂志', desc:'米底 + 大地色', c:{bg:'#F7F3EC',surface:'#FFFFFF',text:'#2B2620',sub:'#7A7064',primary:'#8A5A3B',accent:'#D96C3F',chart:['#D96C3F','#8A5A3B','#C8A97E','#5C4A3A']}, dark:false, attrs:{impact:7,pro:8,warm:12,tech:2,culture:10}},
+ {id:'earth',    name:'暖大地杂志', desc:'米底 + 大地色', c:{bg:'#F7F3EC',surface:'#FFFFFF',text:'#2B2620',sub:'#716758',primary:'#8A5A3B',accent:'#D96C3F',chart:['#D96C3F','#8A5A3B','#C8A97E','#5C4A3A']}, dark:false, attrs:{impact:7,pro:8,warm:12,tech:2,culture:10}},
  {id:'redgold',  name:'红金政务', desc:'中国红 + 金', c:{bg:'#FFFFFF',surface:'#FBF6EE',text:'#3A1F1F',sub:'#8A6A6A',primary:'#C00000',accent:'#D4A843',chart:['#C00000','#D4A843','#8A5A3B','#E8D9B8']}, dark:false, attrs:{impact:9,pro:12,warm:5,tech:1,culture:14}},
  {id:'forest',   name:'自然纪录', desc:'苔绿 + 米白', c:{bg:'#F4F6F2',surface:'#FFFFFF',text:'#1E2B22',sub:'#5F7268',primary:'#2F5D3A',accent:'#C89B3C',chart:['#2F5D3A','#C89B3C','#7FA88C','#3E4A40']}, dark:false, attrs:{impact:6,pro:9,warm:10,tech:3,culture:8}},
  {id:'terminal', name:'终端暗绿', desc:'深色 + 终端绿', c:{bg:'#0C120E',surface:'#111A14',text:'#D7E5DC',sub:'#7A9385',primary:'#2BB673',accent:'#7CF7A8',chart:['#7CF7A8','#2BB673','#1E7A4E','#3E5A48']}, dark:true, attrs:{impact:11,pro:8,warm:2,tech:15,culture:2}},
- {id:'candy',    name:'糖果渐变', desc:'粉底 + 粉紫', c:{bg:'#FDF4F8',surface:'#FFFFFF',text:'#3D2A3A',sub:'#96788F',primary:'#FF6B9D',accent:'#7B61FF',chart:['#FF6B9D','#7B61FF','#FFB3D1','#C4B5FD']}, dark:false, attrs:{impact:12,pro:5,warm:14,tech:5,culture:3}},
+ {id:'candy',    name:'糖果渐变', desc:'粉底 + 粉紫', c:{bg:'#FDF4F8',surface:'#FFFFFF',text:'#3D2A3A',sub:'#7E6076',primary:'#FF6B9D',accent:'#7B61FF',chart:['#FF6B9D','#7B61FF','#FFB3D1','#C4B5FD']}, dark:false, attrs:{impact:12,pro:5,warm:14,tech:5,culture:3}},
  {id:'inkwash',  name:'水墨东方', desc:'宣纸底 + 朱红', c:{bg:'#F5F2EB',surface:'#FFFFFF',text:'#1A1A1A',sub:'#6E6E6E',primary:'#1A1A1A',accent:'#B5451B',chart:['#1A1A1A','#B5451B','#8A8577','#D8D2C4']}, dark:false, attrs:{impact:7,pro:9,warm:8,tech:1,culture:16}},
  {id:'blackgold',name:'黑金实验', desc:'深黑 + 金', c:{bg:'#101014',surface:'#181820',text:'#F2EAD8',sub:'#9A917F',primary:'#D4A843',accent:'#E8C56A',chart:['#E8C56A','#D4A843','#8A7440','#4A4438']}, dark:true, attrs:{impact:12,pro:9,warm:4,tech:8,culture:9}}
 ],
@@ -1263,6 +1295,64 @@ contrast.body=${cb}:1（WCAG AA 达标线 4.5:1）
 执行要求：严格使用上述令牌与色板，图形语言全篇统一，不得引入额外配色与第三种字体，正文对比度不得低于 4.5:1。示例内容按商业汇报结构组织（结论先行 + 数据支撑），实际内容替换时保持版式不变。`;
 }
 
+/* 「交给 AI」指令：把「人选好的审美」翻成「AI 能直接执行的任务」。
+   和 promptText 的区别——promptText 是风格描述，可能被模型自由发挥；
+   这个是指令，给了它要读的文件、要用的骨架、以及一条不用读代码就能看的预览链接。 */
+const BASE_URL = 'https://lalalahulala.github.io/ppt-aesthetic-forge/';
+function handoffText(){
+  const d = O('genre'), dna = dnaCode();
+  return `帮我做一份 PPT，审美已经定好了，按这个执行。
+
+【读规格】${BASE_URL}ai/spec.md
+　　10 套设计方案的完整令牌（纯文本，约 13KB）。从里面找「${d.name}」那一节。
+【用骨架】${BASE_URL}ai/starter.html
+　　960×540 单文件，零依赖。改令牌和文案就是成品。
+【我的选择】${d.name}（${d.en}）— ${d.desc}
+【DNA】${dna}
+【实时画面】${BASE_URL}?dna=${dna}&embed=1
+
+执行要求：
+1. 把 spec 里「${d.name}」那组 --ppt-* 整段替换进 starter.html 的 :root，不要只改一两个值。
+2. 只用这套色板和这套字体；不加渐变、不加图标库、不改圆角。
+3. 输出一个可直接双击打开的 .html 文件，不要附说明文档。
+4. 我的内容：
+　　（在这里写主题、要点、数据。没写就先用示例内容占位，版式别动。）`;
+}
+
+/* ============ URL 直达：?g= / ?dna= / ?page= / ?embed=1 ============ */
+/* 用途：AI 或分享链接给用户一条 URL，打开就是那套方案，不用点六次。
+   embed=1 只留画面，方便 iframe 嵌到文档、Notion、飞书里。 */
+function applyUrlState(){
+  const raw = (location.search||'').replace(/^\?/,'') + '&' + (location.hash||'').replace(/^#/,'');
+  if(!raw.replace(/&/g,'')) return null;
+  const q = new URLSearchParams(raw);
+
+  if(/^(1|true|yes)$/i.test(q.get('embed')||q.get('bare')||'')) document.querySelector('.app').classList.add('embed');
+
+  const dna = q.get('dna');
+  if(dna){
+    const parts = dna.trim().split(':');
+    if(parts.length===8 && parts[0]==='AF'){
+      const keys = ['genre','palette','type','graphics','texture','density'];
+      const good = keys.every((k,i)=> OPTS[k].some(o=>o.id===parts[i+1]));
+      const nums = parts[7].split('').map(c=>parseInt(c,36));
+      if(good && !nums.some(n=>Number.isNaN(n))){
+        keys.forEach((k,i)=>{ S[k]=parts[i+1]; });
+        ['accent','radius','ws','scale'].forEach((k,i)=>{ S[k]=Math.round(nums[i]/35*100); });
+      }
+    }
+  }else{
+    const g = q.get('g')||q.get('design')||q.get('genre');
+    if(g){ const d = OPTS.genre.find(x=>x.id===g); if(d) applyTheme(d.s, d.id); }
+  }
+
+  const p = (q.get('page')||q.get('p')||'').toLowerCase();
+  const pm = {cover:0,content:1,chart:2,[1]:0,[2]:1,[3]:2};
+  if(pm[p]!==undefined) setPage(PAGES[pm[p]][0]);
+
+  return q;
+}
+
 /* ================= 左侧：捏脸 ================= */
 function stepBtn(d){
   const b = document.createElement('button');
@@ -1439,7 +1529,9 @@ function syncThumbs(){
 function fitStage(){
   const wrap = $('stageWrap');
   const z = zoom==='fit' ? 1 : parseFloat(zoom);
-  const k = Math.min((wrap.clientWidth-40)/960, (wrap.clientHeight-40)/540) * z;
+  // 嵌入模式没有界面留白，画面可以贴边
+  const pad = document.querySelector('.app').classList.contains('embed') ? 0 : 40;
+  const k = Math.min((wrap.clientWidth-pad)/960, (wrap.clientHeight-pad)/540) * z;
   $('slideScale').style.transform = `translate(-50%,-50%) scale(${k})`;
   $('zmLabel').textContent = ZOOM_LABEL[zoom];
 }
@@ -1775,6 +1867,7 @@ function toast(msg){
 $('btnRandom').onclick = randomize;
 $('btnReset').onclick = resetAll;
 $('btnExport').onclick = ()=>copy(dnaCode(),'审美 DNA 已复制，去分享吧');
+$('btnHandoff').onclick = ()=>copy(handoffText(),'已复制「交给 AI」指令，粘到任意对话里就能用');
 $('btnCopyDna').onclick = ()=>copy(dnaCode(),'DNA 编码已复制');
 $('btnCopyPrompt').onclick = ()=>copy(promptText(),'提示词已复制，可直接喂给 PPT Skill');
 $('btnCopyCss').onclick = ()=>copy(cssVarsText(),'CSS 变量已复制');
@@ -1792,7 +1885,10 @@ $('btnFocus').onclick = toggleFocus;
 window.addEventListener('resize', fitAll);
 
 /* ================= 初始化 ================= */
-renderSliders(); renderKbd(); switchTab('face'); setPage('cover'); refresh(); fitStage();
+renderSliders(); renderKbd(); switchTab('face'); setPage('cover');
+const urlQ = applyUrlState();          // 深链先落位，再统一渲染一次
+refresh(); fitStage();
+if(urlQ && document.querySelector('.app').classList.contains('embed')) setTimeout(fitAll, 60);
 new ResizeObserver(fitAll).observe($('stageWrap'));
 </script>
 </body>

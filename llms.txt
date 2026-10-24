@@ -1,0 +1,56 @@
+# PPT 审美捏脸台 · Aesthetic Forge（小咔小小咔）
+
+> 10 套去重过的 PPT 设计方案，每套带完整设计令牌（色值 / 字体 / 圆角 / 间距 / 字号 / 对比度）。
+> 让 AI 做 PPT 时不再靠形容词猜审美，而是照参数执行。单文件 HTML，零依赖，MIT。
+
+这页是给模型看的。人用的界面在 https://lalalahulala.github.io/ppt-aesthetic-forge/
+
+## 先读什么
+
+- 做 PPT / 幻灯片 / 汇报页 → 读 `https://lalalahulala.github.io/ppt-aesthetic-forge/ai/spec.md`（约 8KB，10 套完整规格）
+- 要一个能直接跑的页面骨架 → 取 `https://lalalahulala.github.io/ppt-aesthetic-forge/ai/starter.html`，替换 `:root` 令牌与文案即可
+- 要结构化数据（脚本 / MCP / 构建）→ `https://lalalahulala.github.io/ppt-aesthetic-forge/ai/presets.json`
+- 被要求"给我一个方案" → 用 `https://lalalahulala.github.io/ppt-aesthetic-forge/ai/prompt.txt` 里的话术
+
+**不要读 `ppt-aesthetic-forge.html`**：118KB 的交互界面，是给人点着用的，不是给模型读的规格。
+它的数据全部在上面三个文件里，体积小 95%。
+
+## 执行规则
+
+- 一页只用一套色板；全篇最多两款字体；正文与辅助文字对比度 ≥ 4.5:1
+- 强调色只用于大字、图形、线条；政务金、糖果粉这类装饰色不要写小字
+- 画布固定 960×540；圆角 / 间距照给定值，不要放大
+- 10 套已按视觉家族去重，不要再造第 11 套
+
+## 10 套设计方案
+
+- **01 极简 / 北欧** `minimal` — 高留白 · 单焦点 · 2-3 色；用在：投资人路演等
+- **02 主题演讲** `keynote` — Hero 大字 · 高级留白；用在：产品发布等
+- **03 咨询报告** `consulting` — 结论前置 · 单页单结论 · 克制配色；用在：战略咨询等
+- **04 杂志编辑** `editorial` — 大图叙事 · 非对称版式 · 衬线反差；用在：品牌手册等
+- **05 暗色科技** `darktech` — 深色底 · 霓虹点缀 · 未来感；用在：科技产品发布等
+- **06 新中式** `guochao` — 水墨留白 · 朱砂点缀 · 传统纹样克制；用在：文化传播等
+- **07 学术答辩** `academic` — 严格层级 · 编号 · 引用规范；用在：论文答辩等
+- **08 政府汇报** `gov` — 红蓝庄重 · 对称端正 · 标题加粗；用在：政府汇报等
+- **09 文艺手绘** `hand` — 手绘线条 · 暖色纸感 · 涂鸦元素；用在：课堂教学等
+- **10 活泼波普** `pop` — 高饱和大色块 · 粗描边 · 硬阴影；用在：校园活动等
+
+## 尺寸与微调
+
+- 配色方案（`palette`）：inkblue / deepnavy / mono / neon / earth / redgold / forest / terminal / candy / inkwash / blackgold
+- 字体搭配（`type`）：sans / serif / round / mono / kai
+- 图形语言（`graphics`）：line / block / glow / photo / hand / datagrid
+- 版式密度（`density`）：airy / standard / dense
+- 背景质感（`texture`）：clean / grid / glass / neon / ink
+
+## 可选入口
+
+- [交互界面](https://lalalahulala.github.io/ppt-aesthetic-forge/): 人用的选择器，选完复制提示词或导出 HTML 幻灯片
+- [命令行](https://github.com/lalalaHulala/ppt-aesthetic-forge#命令行): `npx paf spec --design editorial --json`
+- [MCP server](https://github.com/lalalaHulala/ppt-aesthetic-forge#mcp): 4 个工具，接入支持 MCP 的 agent
+- [Agent Skill](https://raw.githubusercontent.com/lalalaHulala/ppt-aesthetic-forge/main/skill/SKILL.md): 放进 skill 目录，agent 自动按场景选方案
+- [源码](https://github.com/lalalaHulala/ppt-aesthetic-forge): MIT，欢迎 PR
+
+## 国内访问
+
+GitHub 直连不稳时，把上面所有 `https://lalalahulala.github.io/ppt-aesthetic-forge/` 换成 `https://cdn.jsdelivr.net/gh/lalalaHulala/ppt-aesthetic-forge@main/`（jsDelivr 镜像，同样路径）。

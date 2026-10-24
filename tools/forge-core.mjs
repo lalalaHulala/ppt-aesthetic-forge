@@ -73,6 +73,7 @@ function installGlobals() {
     documentElement: makeNode(),
   };
   globalThis.window = globalThis;
+  globalThis.location = { search: '', hash: '', href: 'http://localhost/', origin: 'http://localhost' };
   globalThis.addEventListener = () => {};
   globalThis.removeEventListener = () => {};
   globalThis.localStorage = {

@@ -7,9 +7,52 @@
 [![零依赖](https://img.shields.io/badge/dependencies-0-21BB4A?style=flat-square)](#技术实现)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-7C5CFF?style=flat-square)](CONTRIBUTING.md)
 
-**[在线试用](https://lalalaHulala.github.io/ppt-aesthetic-forge/) · [下载单文件](https://raw.githubusercontent.com/lalalaHulala/ppt-aesthetic-forge/main/ppt-aesthetic-forge.html) · [反馈问题](../../issues)**
+**[在线试用](https://lalalaHulala.github.io/ppt-aesthetic-forge/) · [国内镜像](https://cdn.jsdelivr.net/gh/lalalaHulala/ppt-aesthetic-forge@main/ppt-aesthetic-forge.html) · [下载单文件](https://raw.githubusercontent.com/lalalaHulala/ppt-aesthetic-forge/main/ppt-aesthetic-forge.html) · [反馈问题](../../issues)**
 
 ![主界面](docs/screenshots/01-overview.png)
+
+---
+
+## 怎么用：挑最省事的那条
+
+| 你的情况 | 做法 | 花多久 |
+| --- | --- | --- |
+| 想先看看 | [打开在线版](https://lalalaHulala.github.io/ppt-aesthetic-forge/) 点几下 | 10 秒 |
+| 正在跟 AI 聊着做 PPT | 把 [`ai/prompt.txt`](ai/prompt.txt) 那段话粘进去 | 一句话 |
+| 想要现成页面，不想从零排版 | 让 AI 用 [`ai/starter.html`](ai/starter.html) 填内容 | 一次对话 |
+| 写代码 / 做 agent | [`npx paf` 或 MCP server](#接到-ai--agent-里用) | 一条命令 |
+| GitHub 打不开 | 全站有 [jsDelivr 镜像](https://cdn.jsdelivr.net/gh/lalalaHulala/ppt-aesthetic-forge@main/) | — |
+
+AI 会用工具，就给它一条链接；不会用工具，就给它一段话。两条路都通。
+
+---
+
+## 给 AI 的入口（重要）
+
+主文件 118KB，**是给人点着用的界面，别让模型去读它**。数据和规格在更小的文件里，体积小 95%，内容等价：
+
+| 文件 | 大小 | 给谁 | 里面是什么 |
+| --- | --- | --- | --- |
+| [`llms.txt`](llms.txt) | 3.7KB | 自动探测 | 总入口，[llms.txt 标准](https://llmstxt.org) |
+| [`ai/spec.md`](ai/spec.md) | 13KB | 模型 | 10 套方案的完整令牌，一次读完就能复现 |
+| [`ai/starter.html`](ai/starter.html) | 10KB | 模型 | 可直接运行的 960×540 骨架，改令牌 + 文案即成品 |
+| [`ai/presets.json`](ai/presets.json) | 42KB | 脚本 | 同上的 JSON 版，带 CSS 变量，给 CLI / MCP / 构建流程 |
+
+![骨架页](docs/screenshots/05-starter.png)
+
+*`ai/starter.html` 的三页：封面 / 要点 / 图表，纯 CSS，零依赖，点击任页全屏放映，也能直接打印成 PDF。*
+
+还有两条**不消耗 token** 的路子：
+
+- **直达链接**：`?g=editorial` 打开杂志编辑那套，`?dna=<DNA>` 还原任意配置，`&page=chart` 指定页。AI 只要给用户一条 URL，不用它自己渲染。
+- **嵌入模式**：`&embed=1` 只留画面、零界面，可直接 iframe 到文档 / Notion / 飞书。
+
+```html
+<iframe src="https://lalalaHulala.github.io/ppt-aesthetic-forge/?g=editorial&embed=1"
+        width="960" height="540" style="border:0" loading="lazy"></iframe>
+```
+
+这些文件全部由 `ppt-aesthetic-forge.html` 自动生成（`node tools/gen-ai.mjs`），CI 会校验一致性——改了 HTML 忘了同步，构建直接失败。
 
 ---
 

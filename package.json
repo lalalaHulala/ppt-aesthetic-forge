@@ -1,7 +1,7 @@
 {
   "name": "ppt-aesthetic-forge",
-  "version": "1.1.0",
-  "description": "单文件 PPT 审美选择器：10 套去重设计方案 + 结构化设计令牌，可当网页用，也可被 agent 通过 CLI / MCP / Skill 调用",
+  "version": "1.2.0",
+  "description": "单文件 PPT 审美选择器：10 套去重设计方案 + 结构化设计令牌。人点着选，AI 读 ai/spec.md 就能照着做，CLI / MCP / Skill 均可调用",
   "type": "module",
   "license": "MIT",
   "bin": {
@@ -12,6 +12,8 @@
     "bin/",
     "tools/",
     "skill/",
+    "ai/",
+    "llms.txt",
     "ppt-aesthetic-forge.html",
     "README.md",
     "LICENSE"
@@ -21,6 +23,7 @@
   },
   "scripts": {
     "test": "node tools/selftest.mjs",
+    "gen:ai": "node tools/gen-ai.mjs",
     "start": "node bin/paf.mjs list"
   },
   "repository": {

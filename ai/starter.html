@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>幻灯片标题 · 审美捏脸台</title>
+<!--
+  ┌──────────────────────────────────────────────────────────────────┐
+  │  给 AI 的三句话（读到这个文件，就照这个做）                        │
+  ├──────────────────────────────────────────────────────────────────┤
+  │  1. 这是一个能直接跑的单文件幻灯片骨架，960×540，零依赖、零联网。  │
+  │  2. 你只需要改两个地方：<style> 开头的 :root 令牌，和三个 <section>│
+  │     里的文字。结构、间距、字体级差都不要动。                       │
+  │  3. 令牌从哪来：仓库里的 ai/spec.md（10 套完整规格）或             │
+  │     ai/presets.json。把 --ppt-* 的值整组替换即可，别混着用。       │
+  └──────────────────────────────────────────────────────────────────┘
+  交付给用户时：保存成 .html，双击就能看，不需要服务器。
+-->
+<style>
+/* ===== ① 设计令牌：整组替换，不要只换一两个 ===== */
+:root{
+  /* 配色（来自 palette） */
+  --ppt-bg:#F5F7FA;
+  --ppt-surface:#FFFFFF;
+  --ppt-text:#1B2A4A;
+  --ppt-sub:#5B6B82;
+  --ppt-primary:#17324D;
+  --ppt-accent:#2E6FDB;
+  --ppt-chart-1:#2E6FDB;
+  --ppt-chart-2:#7FA8E8;
+  --ppt-chart-3:#17324D;
+  --ppt-chart-4:#B9CCE9;
+  /* 字体（来自 type） */
+  --ppt-font-head:"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  --ppt-font-body:"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  --ppt-head-weight:800;
+  --ppt-head-spacing:0em;
+  /* 尺度（来自 density + 微调） */
+  --ppt-radius:8px;
+  --ppt-pad:56px;
+  --ppt-gap:20px;
+  --ppt-title-size:44px;
+  --ppt-body-size:16px;
+  /* 描边：深色底请改成 rgba(255,255,255,.16) */
+  --ppt-line:rgba(128,128,128,.26);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#15181F;
+  font-family:var(--ppt-font-body);
+  display:flex;flex-direction:column;align-items:center;
+  gap:28px;padding:32px 16px 64px;
+}
+.deck{display:flex;flex-direction:column;gap:28px}
+
+/* ===== ② 页面画布：三个版式共用 ===== */
+.page{
+  width:960px;height:540px;flex:none;position:relative;overflow:hidden;
+  background:var(--ppt-bg);color:var(--ppt-text);
+  padding:var(--ppt-pad);border-radius:var(--ppt-radius);
+  box-shadow:0 18px 60px rgba(0,0,0,.35);
+  display:flex;flex-direction:column;
+  cursor:zoom-in;
+}
+.eyebrow{
+  font-size:calc(var(--ppt-body-size) - 3px);letter-spacing:.22em;
+  color:var(--ppt-accent);font-weight:700;text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;
+}
+.eyebrow::after{content:"";height:1px;flex:1;background:var(--ppt-line)}
+h1{
+  font-family:var(--ppt-font-head);font-weight:var(--ppt-head-weight);
+  letter-spacing:var(--ppt-head-spacing);line-height:1.14;
+  font-size:var(--ppt-title-size);
+}
+.sub{color:var(--ppt-sub);font-size:calc(var(--ppt-body-size) + 2px);line-height:1.7;max-width:74%}
+.foot{
+  margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;
+  font-size:calc(var(--ppt-body-size) - 3px);color:var(--ppt-sub);
+  border-top:1px solid var(--ppt-line);padding-top:14px;
+}
+
+/* 封面：左侧强调线 + 大标题，页脚贴底不参与居中 */
+.cover{justify-content:center;gap:calc(var(--ppt-gap) * 1.2)}
+.cover::before{
+  content:"";position:absolute;left:0;top:0;width:6px;height:100%;
+  background:linear-gradient(180deg,var(--ppt-accent),var(--ppt-primary));
+}
+.cover .rule{width:64px;height:4px;background:var(--ppt-accent);border-radius:2px}
+.cover .foot{position:absolute;left:var(--ppt-pad);right:var(--ppt-pad);bottom:var(--ppt-pad);margin:0}
+
+/* 要点页：编号列表 */
+.points .body{display:grid;grid-template-columns:1fr 1fr;gap:var(--ppt-gap) calc(var(--ppt-gap) * 1.6);margin-top:calc(var(--ppt-gap) * 1.2);flex:1;align-content:center}
+.item{display:flex;gap:14px;align-items:flex-start}
+.item .no{
+  font-family:var(--ppt-font-head);font-weight:var(--ppt-head-weight);
+  font-size:calc(var(--ppt-body-size) + 2px);color:var(--ppt-accent);
+  min-width:26px;padding-top:1px;
+}
+.item b{display:block;font-size:calc(var(--ppt-body-size) + 2px);font-weight:700;margin-bottom:4px}
+.item span{color:var(--ppt-sub);font-size:calc(var(--ppt-body-size) - 1px);line-height:1.65}
+
+/* 图表页：纯 CSS 柱状 */
+.chart .plot{
+  display:flex;align-items:flex-end;gap:calc(var(--ppt-gap) * .9);
+  height:172px;margin-top:calc(var(--ppt-gap) * 1.1);
+  border-bottom:1px solid var(--ppt-line);padding-bottom:0;
+}
+.bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.bar i{
+  width:100%;background:var(--ppt-chart-1);border-radius:var(--ppt-radius) var(--ppt-radius) 0 0;
+  display:block;position:relative;
+}
+.bar:nth-child(2n) i{background:var(--ppt-chart-2)}
+.bar:nth-child(3n) i{background:var(--ppt-chart-3)}
+.bar u{
+  text-decoration:none;font-size:calc(var(--ppt-body-size) - 4px);
+  color:var(--ppt-sub);margin-top:8px;
+}
+.kpis{display:flex;gap:calc(var(--ppt-gap) * 1.6);margin-top:calc(var(--ppt-gap) * 1.1)}
+.kpi b{font-family:var(--ppt-font-head);font-size:calc(var(--ppt-title-size) * .62);color:var(--ppt-accent);display:block;line-height:1}
+.kpi span{font-size:calc(var(--ppt-body-size) - 3px);color:var(--ppt-sub)}
+
+/* ===== ③ 放映：点击任意页放大，Esc 退出 ===== */
+body.solo{background:#0b0d12;display:grid;place-items:center;height:100vh;overflow:hidden;padding:0}
+body.solo .deck{display:block}
+body.solo .page{display:none;cursor:zoom-out}
+body.solo .page.on{display:flex}
+.hint{font-size:12px;color:#6B7488;letter-spacing:.05em}
+@media print{
+  body{background:#fff;padding:0;gap:0}
+  .hint{display:none}
+  .page{box-shadow:none;border-radius:0;break-after:page}
+}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ===== 第 1 页 · 封面 ===== -->
+  <section class="page cover">
+    <div class="eyebrow">商业计划书 · 2026</div>
+    <h1 style="margin-top:18px">三年增长十倍的<br>底层逻辑</h1>
+    <div class="rule" style="margin:22px 0"></div>
+    <p class="sub">用数据讲一个可复制的增长故事</p>
+    <div class="foot"><span>创始人 · 2026.10</span><span>SERIES A · 融资路演</span></div>
+  </section>
+
+  <!-- ===== 第 2 页 · 要点（建议 4 条，多了删 .item 整块） ===== -->
+  <section class="page points">
+    <div class="eyebrow">核心亮点</div>
+    <h1 style="margin-top:14px;font-size:calc(var(--ppt-title-size) * .66)">四件事决定了我们跑得快</h1>
+    <div class="body">
+      <div class="item"><span class="no">01</span><div><b>市场规模</b><span>千亿赛道，年复合增长 23%，渗透率仍处早期</span></div></div>
+      <div class="item"><span class="no">02</span><div><b>商业模式</b><span>订阅制 + 增值服务，双轮驱动，续费率 91%</span></div></div>
+      <div class="item"><span class="no">03</span><div><b>竞争壁垒</b><span>自研引擎 + 数据闭环，迁移成本高</span></div></div>
+      <div class="item"><span class="no">04</span><div><b>融资用途</b><span>40% 研发 / 35% 市场 / 25% 运营</span></div></div>
+    </div>
+    <div class="foot"><span>审美捏脸台 · 单文件幻灯片骨架</span><span>02</span></div>
+  </section>
+
+  <!-- ===== 第 3 页 · 图表（柱高 = 百分比，直接改 height） ===== -->
+  <section class="page chart">
+    <div class="eyebrow">营收增长趋势</div>
+    <h1 style="margin-top:14px;font-size:calc(var(--ppt-title-size) * .66)">连续六个季度环比上行</h1>
+    <div class="plot">
+      <div class="bar"><i style="height:32%"></i><u>Q1</u></div>
+      <div class="bar"><i style="height:45%"></i><u>Q2</u></div>
+      <div class="bar"><i style="height:58%"></i><u>Q3</u></div>
+      <div class="bar"><i style="height:70%"></i><u>Q4</u></div>
+      <div class="bar"><i style="height:86%"></i><u>Q5</u></div>
+      <div class="bar"><i style="height:100%"></i><u>Q6</u></div>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><b>3.2×</b><span>年营收增长</span></div>
+      <div class="kpi"><b>91%</b><span>客户续费率</span></div>
+    </div>
+    <div class="foot"><span>下一轮融资将用于核心引擎研发与海外市场拓展</span><span>03</span></div>
+  </section>
+
+</div>
+
+<p class="hint">点击任一页全屏放映 · ← → 翻页 · Esc 退出 · 可直接打印成 PDF</p>
+
+<script>
+/* 极简放映：只用来看，删掉也不影响阅读 */
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page')), solo=-1;
+  function show(i){
+    solo=i; document.body.classList.toggle('solo',i>=0);
+    pages.forEach(function(p,j){ p.classList.toggle('on',i>=0&&j===i); });
+    if(i>=0) fit();
+  }
+  function fit(){
+    var k=Math.min(window.innerWidth/960,window.innerHeight/540)*0.96;
+    document.body.style.zoom=k;
+  }
+  pages.forEach(function(p,i){ p.addEventListener('click',function(){ show(solo<0?i:-1); }); });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape') return show(-1);
+    if(e.key==='ArrowRight'||e.key==='ArrowLeft'||e.key===' '||e.key==='PageDown'||e.key==='PageUp'){
+      e.preventDefault();
+      var d=(e.key==='ArrowLeft'||e.key==='PageUp')?-1:1;
+      show(solo<0?0:(solo+d+pages.length)%pages.length);
+    }
+  });
+  window.addEventListener('resize',function(){ if(solo>=0) fit(); });
+})();
+</script>
+</body>
+</html>

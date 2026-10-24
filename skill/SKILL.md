@@ -20,7 +20,26 @@ description: 当用户要做 PPT、幻灯片、演示文稿、汇报材料、路
 
 ## 怎么用
 
-不需要安装任何依赖，只要有 Node 18+。在仓库根目录执行：
+### 路一：读远端规格（零安装，任何环境都能走）
+
+```text
+https://lalalahulala.github.io/ppt-aesthetic-forge/ai/spec.md      # 10 套完整令牌，约 13KB
+https://lalalahulala.github.io/ppt-aesthetic-forge/ai/starter.html  # 可直接运行的 960×540 骨架
+```
+
+国内打不开 GitHub 时换镜像，路径相同：
+
+```text
+https://cdn.jsdelivr.net/gh/lalalaHulala/ppt-aesthetic-forge@main/ai/spec.md
+```
+
+**不要读 `ppt-aesthetic-forge.html`**：118KB 的交互界面，给人点着用的，不是规格。上面两个文件体积小 95%，内容等价。
+
+做法：读 spec.md → 挑一套 → 把该方案的 `--ppt-*` 整组替换进 starter.html 的 `:root` → 填文案 → 交付 .html。
+
+### 路二：跑本地命令（有仓库、有 Node 18+）
+
+不需要安装任何依赖。在仓库根目录执行：
 
 ```bash
 node bin/paf.mjs list                  # 看 10 套方案（含好处与适用场景）

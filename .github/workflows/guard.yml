@@ -77,6 +77,29 @@ jobs:
       - name: 自检（10 套方案 · DNA 往返 · 覆盖 · 对比度）
         run: node tools/selftest.mjs
 
+      - name: AI 入口文件与 HTML 同步
+        # llms.txt / ai/* 全部由 HTML 生成。改了 HTML 忘了跑 gen:ai，这里会拦住
+        run: node tools/gen-ai.mjs --check
+
+      - name: AI 入口文件体积与外部引用
+        run: |
+          total=0
+          for f in llms.txt ai/spec.md ai/prompt.txt ai/starter.html ai/presets.json; do
+            size=$(wc -c < "$f")
+            echo "$f：$size 字节"
+            total=$((total + size))
+          done
+          echo "五个入口合计：$total 字节"
+          if [ "$total" -gt 120000 ]; then
+            echo "::error::AI 入口合计超过 120KB。给模型读的东西必须轻，别往里塞图片或大段内联资源。"
+            exit 1
+          fi
+          if grep -nE '<script[^>]+src=|<img[^>]+src=' ai/starter.html; then
+            echo "::error file=ai/starter.html::骨架必须零外部引用。"
+            exit 1
+          fi
+          echo "外部引用：0"
+
       - name: CLI 冒烟
         run: |
           node bin/paf.mjs list > /dev/null
